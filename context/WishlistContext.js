@@ -1,9 +1,37 @@
-import React, { createContext, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
+
+  // load wishlist from storage
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem("wishlist");
+        if (raw && mounted) setWishlist(JSON.parse(raw));
+      } catch (_e) {
+        // ignore
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // save wishlist whenever it changes
+  useEffect(() => {
+    (async () => {
+      try {
+        await AsyncStorage.setItem("wishlist", JSON.stringify(wishlist));
+      } catch (_e) {
+        // ignore
+      }
+    })();
+  }, [wishlist]);
 
   const addToWishlist = (product) => {
     setWishlist((prev) => {

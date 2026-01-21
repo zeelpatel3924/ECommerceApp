@@ -1,16 +1,46 @@
-import React, { createContext, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
+  // load cart from storage on mount
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem("cart");
+        if (raw && mounted) {
+          setCart(JSON.parse(raw));
+        }
+      } catch (_e) {
+        // ignore
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // persist cart whenever it changes
+  useEffect(() => {
+    (async () => {
+      try {
+        await AsyncStorage.setItem("cart", JSON.stringify(cart));
+      } catch (_e) {
+        // ignore
+      }
+    })();
+  }, [cart]);
+
   const addToCart = (product) => {
     const found = cart.find((item) => item.id === product.id);
 
     if (found) {
       const updated = cart.map((item) =>
-        item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+        item.id === product.id ? { ...item, qty: item.qty + 1 } : item,
       );
       setCart(updated);
     } else {
@@ -25,7 +55,7 @@ export function CartProvider({ children }) {
 
   const increaseQty = (id) => {
     const updated = cart.map((item) =>
-      item.id === id ? { ...item, qty: item.qty + 1 } : item
+      item.id === id ? { ...item, qty: item.qty + 1 } : item,
     );
     setCart(updated);
   };

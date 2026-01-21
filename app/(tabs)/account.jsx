@@ -1,27 +1,40 @@
-import { useRouter } from "expo-router";
-import { ScrollView, View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { logout as logoutAction } from "../../src/store/authSlice";
 import styles from "../../styles/accountStyles";
+import { logout as logoutUtil } from "../../utils/auth";
 
 export default function Account() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    Alert.alert(
-      "Logout",
-      "Are you sure you want to logout?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Logout",
-          style: "destructive",
-          onPress: () => {
-            // Clear user session or token here
-            router.replace("/login"); // Redirect to login page
-          },
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Logout",
+        style: "destructive",
+        onPress: async () => {
+          // Clear user session in AsyncStorage and Redux, then redirect
+          try {
+            dispatch(logoutAction());
+            await logoutUtil();
+          } catch (_err) {
+            // fallback redirect
+            router.replace("/login");
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
@@ -68,6 +81,7 @@ export default function Account() {
           danger
           onPress={handleLogout}
         />
+        {/* red logout button removed (logout available in menu) */}
       </View>
     </ScrollView>
   );
@@ -81,7 +95,9 @@ function MenuCard({ icon, title, danger, onPress }) {
       onPress={onPress}
     >
       <Ionicons name={icon} size={26} color={danger ? "#E63946" : "#234C6A"} />
-      <Text style={[styles.menuText, danger && { color: "#E63946" }]}>{title}</Text>
+      <Text style={[styles.menuText, danger && { color: "#E63946" }]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }

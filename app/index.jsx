@@ -1,5 +1,6 @@
 import { Redirect } from "expo-router";
 
 export default function Index() {
-  return <Redirect href="/(tabs)/home" />;
+  // start at splash which will decide whether to show login or home
+  return <Redirect href="/splash" />;
 }
