@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutAction } from "../../src/store/authSlice";
 import styles from "../../styles/accountStyles";
 import { logout as logoutUtil } from "../../utils/auth";
-
 export default function Account() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const user = useSelector((s) => s.auth.user);
 
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -41,10 +41,22 @@ export default function Account() {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Profile Card */}
       <View style={styles.profileCard}>
-        <Image style={styles.avatar} />
+        {user && user.name ? (
+          <View style={[styles.avatar, styles.avatarPlaceholder]}>
+            <Text style={styles.avatarInitials}>
+              {user.name
+                .split(" ")
+                .map((n) => n[0])
+                .slice(0, 2)
+                .join("")}
+            </Text>
+          </View>
+        ) : (
+          <Image style={styles.avatar} />
+        )}
         <View style={{ marginLeft: 14 }}>
-          <Text style={styles.name}>Zeel Patel</Text>
-          <Text style={styles.email}>zeel@example.com</Text>
+          <Text style={styles.name}>{user?.name ?? "Guest User"}</Text>
+          <Text style={styles.email}>{user?.email ?? "Not signed in"}</Text>
         </View>
       </View>
 

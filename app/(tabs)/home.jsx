@@ -58,10 +58,7 @@ export default function Home() {
 
 
 
-//badhi image and icon svg use karvana
-//product image nu curve set karvanu 
+
+
 //navigation page banavanu je badh page handdle kare
-// home icon category icon 
-// category page ma left scroll  
 //setting ma hindi english 
-//log in sign up working
