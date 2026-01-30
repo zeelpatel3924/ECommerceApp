@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import React from "react";
 import {
   Alert,
-  Image,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -12,10 +12,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutAction } from "../../src/store/authSlice";
 import styles from "../../styles/accountStyles";
 import { logout as logoutUtil } from "../../utils/auth";
+
 export default function Account() {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((s) => s.auth.user);
+
+  const initials = React.useMemo(() => {
+    if (!user?.name) return "GU";
+    return user.name
+      .split(" ")
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+  }, [user?.name]);
 
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -24,12 +35,10 @@ export default function Account() {
         text: "Logout",
         style: "destructive",
         onPress: async () => {
-          // Clear user session in AsyncStorage and Redux, then redirect
           try {
             dispatch(logoutAction());
             await logoutUtil();
-          } catch (_err) {
-            // fallback redirect
+          } finally {
             router.replace("/login");
           }
         },
@@ -38,29 +47,36 @@ export default function Account() {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Profile Card */}
+    <ScrollView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* ================= PROFILE ================= */}
       <View style={styles.profileCard}>
-        {user && user.name ? (
-          <View style={[styles.avatar, styles.avatarPlaceholder]}>
-            <Text style={styles.avatarInitials}>
-              {user.name
-                .split(" ")
-                .map((n) => n[0])
-                .slice(0, 2)
-                .join("")}
-            </Text>
-          </View>
-        ) : (
-          <Image style={styles.avatar} />
-        )}
+        <View
+          style={[
+            styles.avatar,
+            user?.name && styles.avatarPlaceholder,
+          ]}
+        >
+          {user?.name ? (
+            <Text style={styles.avatarInitials}>{initials}</Text>
+          ) : (
+            <Ionicons name="person" size={28} color="#fff" />
+          )}
+        </View>
+
         <View style={{ marginLeft: 14 }}>
-          <Text style={styles.name}>{user?.name ?? "Guest User"}</Text>
-          <Text style={styles.email}>{user?.email ?? "Not signed in"}</Text>
+          <Text style={styles.name}>
+            {user?.name ?? "Guest User"}
+          </Text>
+          <Text style={styles.email}>
+            {user?.email ?? "Not signed in"}
+          </Text>
         </View>
       </View>
 
-      {/* Menu Cards */}
+      {/* ================= MENU ================= */}
       <View style={styles.menuGrid}>
         <MenuCard
           icon="bag-outline"
@@ -93,21 +109,30 @@ export default function Account() {
           danger
           onPress={handleLogout}
         />
-        {/* red logout button removed (logout available in menu) */}
       </View>
     </ScrollView>
   );
 }
 
-/* Reusable Menu Card */
+/* ================= MENU CARD ================= */
 function MenuCard({ icon, title, danger, onPress }) {
   return (
     <TouchableOpacity
+      activeOpacity={0.7}
       style={[styles.menuCard, danger && styles.dangerCard]}
       onPress={onPress}
     >
-      <Ionicons name={icon} size={26} color={danger ? "#E63946" : "#234C6A"} />
-      <Text style={[styles.menuText, danger && { color: "#E63946" }]}>
+      <Ionicons
+        name={icon}
+        size={26}
+        color={danger ? "#E63946" : "#234C6A"}
+      />
+      <Text
+        style={[
+          styles.menuText,
+          danger && styles.dangerText,
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>

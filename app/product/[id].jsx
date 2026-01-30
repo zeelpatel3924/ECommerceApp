@@ -6,15 +6,21 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import styles from "../../styles/idStyles";
+import {
+  Animated,
+  Dimensions,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useCart } from "../../context/CartContext";
-import BEST_SELLING from "../data/BestSelling";
-import PRODUCTS from "../data/products";
-import GROCERY_PROUDUCTS from "../data/Groceryproducts";
-import CTALL_PRODUCTS from "../data/CTallproducts";
 import { useWishlist } from "../../context/WishlistContext";
-
+import styles from "../../styles/idStyles";
+import BEST_SELLING from "../data/BestSelling";
+import CTALL_PRODUCTS from "../data/CTallproducts";
+import GROCERY_PROUDUCTS from "../data/Groceryproducts";
+import PRODUCTS from "../data/products";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -32,8 +38,11 @@ export default function ProductDetails() {
 
   const [qty, setQty] = React.useState(1);
   const [added, setAdded] = React.useState(false);
-const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const screenWidth = Dimensions.get("window").width;
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } =
+    useWishlist();
 
   const product = React.useMemo(() =>
     ALL_PRODUCTS.find((p) => p.id === id, [id]),
@@ -50,6 +59,20 @@ const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlis
   }
 
   const handleAddToCart = () => {
+    // animate product image scale for feedback
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 0.9,
+        duration: 140,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 180,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
     addToCart({ ...product, qty });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -115,13 +138,35 @@ const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlis
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* Image */}
+        {/* Image Carousel */}
         <View style={styles.imageWrapper}>
-          <Image
-            source={{ uri: product.image }}
-            style={styles.image}
-            contentFit="cover"
-          />
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onMomentumScrollEnd={(e) => {
+              const idx = Math.round(
+                e.nativeEvent.contentOffset.x / screenWidth,
+              );
+              setActiveIndex(idx);
+            }}
+          >
+            {(product.images || [product.image]).map((src, i) => (
+              <Animated.View
+                key={i}
+                style={{
+                  width: screenWidth,
+                  transform: [{ scale: scaleAnim }],
+                }}
+              >
+                <Image
+                  source={{ uri: src }}
+                  style={styles.image}
+                  contentFit="cover"
+                />
+              </Animated.View>
+            ))}
+          </ScrollView>
 
           {/* Wishlist */}
           <TouchableOpacity
@@ -140,6 +185,16 @@ const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlis
               color={isInWishlist(product.id) ? "#e63946" : "#fff"}
             />
           </TouchableOpacity>
+
+          {/* Dots */}
+          <View style={styles.dotsContainer} pointerEvents="none">
+            {(product.images || [product.image]).map((_, i) => (
+              <View
+                key={i}
+                style={[styles.dot, activeIndex === i && styles.dotActive]}
+              />
+            ))}
+          </View>
         </View>
 
         {/* Title */}
@@ -221,7 +276,7 @@ const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlis
           </TouchableOpacity>
         </View>
 
-        {added && <Text style={styles.addedText}>✔ Added to cart</Text>}
+        {added && <Text style={styles.addedText}> Added to cart</Text>}
       </ScrollView>
 
       {/* Sticky Bar */}

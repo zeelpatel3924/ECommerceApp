@@ -28,6 +28,41 @@ export const GROCERY_PRODUCTS = [
     image:"https://i.pinimg.com/736x/12/98/81/12988123acf19e531ecb18f63bd114ac.jpg",
     price:"₹295",
     category:"grocery",
-  }
+  },
+  {
+    id:"F5",
+    title:"Oreo",
+    image:"https://i.pinimg.com/736x/ed/5c/1b/ed5c1b3f4f4f4f4f4f4f4f4f4f4f4f4f.jpg",
+    price:"₹30",
+    category:"grocery",
+  },
+  {
+    id:"F6",
+    title:"Maggi noodles",
+    image:"https://i.pinimg.com/736x/5a/ed/1c/5aed1c3f4f4f4f4f4f4f4f4f4f4f4f4f.jpg",
+    price:"₹12",
+    category:"grocery",
+  },
+  {
+    id:"F7",
+    title:"Dairy milk chocolate",
+    image:"https://i.pinimg.com/736x/3b/1e/5f/3b1e5f3f4f4f4f4f4f4f4f4f4f4f4f4f.jpg",
+    price:"₹25",
+    category:"grocery",
+  },
+  {
+    id:"F8",
+    title:"Kellogg's corn flakes",
+    image:"https://i.pinimg.com/736x/aa/bb/cc/aabbcc3f4f4f4f4f4f4f4f4f4f4f4f4f.jpg",
+    price:"₹150",
+    category:"grocery",
+  },
+  {
+    id:"F9",
+    title:"Red Bull energy drink",
+    image:"https://i.pinimg.com/736x/cc/dd/ee/ccddee3f4f4f4f4f4f4f4f4f4f4f4f4f.jpg",
+    price:"₹120",
+    category:"grocery",
+  },
 ]
 export default GROCERY_PRODUCTS;

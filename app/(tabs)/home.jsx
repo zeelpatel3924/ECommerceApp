@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import React from "react";
 import { ScrollView } from "react-native";
 
@@ -7,22 +8,23 @@ import Header from "../../components/Header";
 import HorizontalProductList from "../../components/HorizontalProductList";
 import ProductGrid from "../../components/ProductGrid";
 import SearchBar from "../../components/SearchBar";
-import SectionHeader from "../../components/SectionHeader";
 
+import { IMAGES } from "@/constants/image";
+import ProductGridHeader from "../../components/SectionHeader";
+import { Best_SellingHeader, Grocery_ProductHeader, TopProductHeader  } from "../../components/SectionHeader";
 import styles from "../../styles/homeStyles";
 import { BEST_SELLING } from "../data/BestSelling";
-import { GROCERY_PRODUCTS }from "../data/Groceryproducts";
+import { GROCERY_PRODUCTS } from "../data/Groceryproducts";
 import { PRODUCTS } from "../data/products";
-import {IMAGES} from "@/constants/image"
 
 export default function Home() {
   const categories = [
     { id: 1, name: "Mobiles", image: IMAGES.ct1 },
     { id: 2, name: "Fashion", image: IMAGES.ct2 },
     { id: 3, name: "Electronics", image: IMAGES.ct3 },
-    { id: 4, name: "Appliances", image: IMAGES.ct4},
+    { id: 4, name: "Appliances", image: IMAGES.ct4 },
     { id: 5, name: "Home & Kitchen", image: IMAGES.ct5 },
-    { id: 6, name: "Sports", image:IMAGES.ct6 },
+    { id: 6, name: "Sports", image: IMAGES.ct6 },
   ];
 
   const banners = [
@@ -38,27 +40,20 @@ export default function Home() {
       <CategoryList categories={categories} />
       <BannerSlider banners={banners} />
 
-      <SectionHeader title="Suggested for you" />
-      <ProductGrid products={PRODUCTS} />
+      <ProductGridHeader title="Suggested for you" />
+      <ProductGrid products={PRODUCTS.slice(0, 4)} />
 
-      <SectionHeader title="Best Selling" />
+      <Best_SellingHeader title="Best Selling" />
       <HorizontalProductList data={BEST_SELLING} />
 
-      <SectionHeader title="Grocery Products" />
+      <Grocery_ProductHeader title="Grocery Products" />
       <HorizontalProductList data={GROCERY_PRODUCTS} />
 
-      <SectionHeader title="Top Products" />
+      <TopProductHeader title="Top Products" />
       <ProductGrid products={PRODUCTS} />
     </ScrollView>
   );
 }
 
-
-
-
-
-
-
-
 //navigation page banavanu je badh page handdle kare
-//setting ma hindi english 
+//setting ma hindi english

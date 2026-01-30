@@ -225,11 +225,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.15)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.25)",
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 30,
-    shadowOffset: { width: 0, height: 20 },
-    elevation: 20,
+    // shadowColor: "#000",
+    // shadowOpacity: 0.3,
+    // shadowRadius: 30,
+    // shadowOffset: { width: 0, height: 20 },
+    // elevation: 20,
   },
 
   brand: {

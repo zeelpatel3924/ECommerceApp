@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 
 searchInput: {
   flex: 1,
-  marginLeft: 20,
+  marginLeft: 10,
 
   fontSize: 15,
   color: "#1B3C53",

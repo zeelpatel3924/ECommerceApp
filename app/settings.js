@@ -13,8 +13,13 @@ export default function Settings() {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Header with Back Button */}
-      <View style={[styles.header, { flexDirection: "row", alignItems: "center" }]}>
-        <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 16 }}>
+      <View
+        style={[styles.header, { flexDirection: "row", alignItems: "center" }]}
+      >
+        <TouchableOpacity
+          onPress={() => router.push("/account")}
+          style={{ marginRight: 16 }}
+        >
           <Ionicons name="arrow-back" size={26} color="#234C6A" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>

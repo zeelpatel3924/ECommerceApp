@@ -1,22 +1,22 @@
 /* eslint-disable import/no-named-as-default */
 
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useMemo, useState } from "react";
 import {
-  Image,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Image,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import styles from "../../styles/categoriesStyles";
-import { useCart } from "../../context/CartContext";
 import Bestselling from "../data/BestSelling";
-import PRODUCTS from "../data/products";
+import CTALL_PRODUCTS from "../data/CTallproducts";
 import GROCERY_PRODUCTS from "../data/Groceryproducts";
-import CTALL_PRODUCTS from "../data/CTallproducts"
+import PRODUCTS from "../data/products";
+import CartBadge from "../../components/CartBadge";
 
 const categories = [
   "All",
@@ -38,14 +38,27 @@ const categories = [
   "Garden",
 ];
 
-const products = [...PRODUCTS, ...CTALL_PRODUCTS, ...Bestselling, ...GROCERY_PRODUCTS];
+const products = [
+  ...PRODUCTS,
+  ...CTALL_PRODUCTS,
+  ...Bestselling,
+  ...GROCERY_PRODUCTS,
+];
 
 export default function Categories() {
-  const { cart } = useCart();
+
+  const { category: initialCategory } = useLocalSearchParams();
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchText, setSearchText] = useState("");
+
+  // if navigated with ?category=Mobiles, auto-select it
+  useEffect(() => {
+    if (initialCategory) {
+      setSelectedCategory(initialCategory as string);
+    }
+  }, [initialCategory]);
 
   /* 🔥 FINAL FILTER LOGIC */
   const filteredProducts = useMemo(() => {
@@ -94,43 +107,7 @@ export default function Categories() {
           </View>
 
           {/* CART */}
-          <TouchableOpacity
-            style={{ position: "relative" }}
-            onPress={() => router.push("/cart")}
-          >
-            <Ionicons name="cart-outline" size={22} color="#faf8f8ff" />
-
-            {/* Cart Badge */}
-            {cart.length > 0 && (
-              <View
-                style={{
-                  position: "absolute",
-                  top: -10,
-                  right: -6,
-                  backgroundColor: "#456882",
-                  borderRadius: 10,
-                  minWidth: 18,
-                  height: 18,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingHorizontal: 4,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: 11,
-                    fontWeight: "700",
-                  }}
-                >
-                  {cart.reduce(
-                    (sum: any, item: { qty: any }) => sum + item.qty,
-                    0
-                  )}
-                </Text>
-              </View>
-            )}
-          </TouchableOpacity>
+          <CartBadge/>
         </View>
       </View>
 

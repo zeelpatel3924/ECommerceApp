@@ -4,6 +4,11 @@ export const BEST_SELLING = [
     title: "T-Shirt",
     price: "₹300",
     image: "https://i.pinimg.com/736x/b6/5e/5e/b65e5e9ad12e70e22dde7207ea544bfc.jpg",
+    images: [
+      "https://i.pinimg.com/736x/b6/5e/5e/b65e5e9ad12e70e22dde7207ea544bfc.jpg",
+      "https://i.pinimg.com/736x/17/a0/01/17a0011e752e69ee5cc37aa01cc9f791.jpg",
+      "https://i.pinimg.com/736x/79/60/90/7960906fd0f2450299f499944212a806.jpg"
+    ],
     category: "Fashion",
   
   },
@@ -14,6 +19,10 @@ export const BEST_SELLING = [
     title: "Shirt",
     price: "₹555",
     image: "https://i.pinimg.com/736x/17/a0/01/17a0011e752e69ee5cc37aa01cc9f791.jpg",
+    images: [
+      "https://i.pinimg.com/736x/17/a0/01/17a0011e752e69ee5cc37aa01cc9f791.jpg",
+      "https://i.pinimg.com/736x/79/60/90/7960906fd0f2450299f499944212a806.jpg"
+    ],
     category: "Fashion",
   },
 
@@ -23,6 +32,11 @@ export const BEST_SELLING = [
     title: "Shoes",
     price: "₹999",
     image: "https://i.pinimg.com/736x/79/60/90/7960906fd0f2450299f499944212a806.jpg",
+    images: [
+      "https://i.pinimg.com/736x/79/60/90/7960906fd0f2450299f499944212a806.jpg",
+      "https://i.pinimg.com/736x/b6/5e/5e/b65e5e9ad12e70e22dde7207ea544bfc.jpg",
+      "https://i.pinimg.com/736x/17/a0/01/17a0011e752e69ee5cc37aa01cc9f791.jpg"
+    ],
     category: "Fashion",
   },
 

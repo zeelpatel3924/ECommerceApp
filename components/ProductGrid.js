@@ -8,6 +8,7 @@ import { useWishlist } from "../context/WishlistContext";
 export default function ProductGrid({ products }) {
   const router = useRouter();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  
 
   return (
     <View style={styles.grid}>
@@ -30,8 +31,9 @@ export default function ProductGrid({ products }) {
             >
               <Ionicons
                 name={liked ? "heart" : "heart-outline"}
-                size={16}
-                color="#fff"
+                size={20}
+                 color={liked ? "#e63946" : "#ffffff"}
+              
               />
             </TouchableOpacity>
 

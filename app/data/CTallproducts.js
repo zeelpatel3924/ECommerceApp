@@ -5,16 +5,22 @@
    export const CTALL_PRODUCTS = [
     {
        id: "CA1",
-       title:"GT ",
-       image: "https://i.pinimg.com/1200x/0d/46/61/0d46615f14419a3223b56a5d5beb7638.jpg",
-       price:"₹1000",
-       category:"toys",
-
-    },
+       title: "GT ",
+       image:
+         "https://i.pinimg.com/1200x/0d/46/61/0d46615f14419a3223b56a5d5beb7638.jpg",
+         images: [
+          "https://i.pinimg.com/1200x/0d/46/61/0d46615f14419a3223b56a5d5beb7638.jpg",
+         ],
+       price: "₹1000",
+       category: "toys",
+     },
     {
        id: "CA2",
        title:"Sony wh1000xm4 headphone ",
        image: "https://i.pinimg.com/1200x/e9/05/c5/e905c536c865d8b9c93d184aef1e45ec.jpg",
+       images: [
+        "https://i.pinimg.com/1200x/e9/05/c5/e905c536c865d8b9c93d184aef1e45ec.jpg",
+       ],
        price:"₹1000",
        category:"Electronics", 
     },
@@ -22,13 +28,19 @@
        id: "CA3",
        title:"Cetaphil light gel sunscreen SPF 50 ",
        image: "https://i.pinimg.com/736x/64/33/5a/64335a88a6c8b45d6bb253b0a9be3830.jpg",
-       price:"₹459",
-       category:"beauty",
+       images: [
+        "https://i.pinimg.com/736x/64/33/5a/64335a88a6c8b45d6bb253b0a9be3830.jpg",
+       ],
+       price: "₹459",
+       category: "beauty",
     },
     {
        id: "CA4",
        title:"Samsung S25 Ultra ",
        image: "https://i.pinimg.com/736x/d9/82/12/d982123a83fe7a0f6c5ca92e5ea2d814.jpg",
+       images: [
+        "https://i.pinimg.com/736x/d9/82/12/d982123a83fe7a0f6c5ca92e5ea2d814.jpg",
+       ],
        price:"₹ 1,25,000",
        category:"mobiles",
     },
@@ -36,8 +48,11 @@
        id: "CA5",
        title:" Apple Airpods pro",
        image: "https://i.pinimg.com/736x/bc/b5/86/bcb5862be15933f59f7835ecb382294c.jpg",
+       images: [
+        "https://i.pinimg.com/736x/bc/b5/86/bcb5862be15933f59f7835ecb382294c.jpg",
+       ],
        price:"₹25,000",
-       category:"Electronics",
+       category:"Music",
     },
 
       {
@@ -55,6 +70,41 @@
        price:"₹18,000",
        category:"Appliances",
     },
+    {
+    id: "CA8",
+    title: "Laptop",
+    price: "₹ 50,000",
+    image: "https://i.pinimg.com/736x/1c/ae/ff/1caeff2f3f3f5f4f4f4f4f4f4f4f4f4f.jpg", 
+    category: "Electronics",
+  },
+  {
+    id: "CA9",  
+    title: "Headphones", 
+    price: "₹ 2,500",
+    image: "https://i.pinimg.com/736x/ed/2b/7c/ed2b7c3f3f3f5f4f4f4f4f4f4f4f4f4f.jpg", 
+    category: "Music",
+  },
+  {
+    id: "CA10",  
+    title: "Smartwatch", 
+    price: "₹ 5,000",
+    image: "https://i.pinimg.com/736x/ab/cd/ef/abcdef3f3f3f5f4f4f4f4f4f4f4f4f4f.jpg", 
+    category: "Electronics",
+  },
+  {
+    id: "CA11",  
+    title: "Tablet", 
+    price: "₹ 15,000",
+    image: "https://i.pinimg.com/736x/12/34/56/1234563f3f3f5f4f4f4f4f4f4f4f4f4f.jpg", 
+    category: "Electronics",
+  },
+  {
+    id: "CA12",  
+    title: "Camera", 
+    price: "₹ 25,000",
+    image: "https://i.pinimg.com/736x/65/43/21/6543213f3f3f5f4f4f4f4f4f4f4f4f4f.jpg", 
+    category: "Electronics",
+  },
 
     
    ]

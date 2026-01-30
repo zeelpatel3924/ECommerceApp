@@ -1,47 +1,57 @@
 import { StyleSheet } from "react-native";
-const PRIMARY = "#234C6A";
-const BG = "#d1d9e6";
 
-const styles = StyleSheet.create({
-  
+export default StyleSheet.create({
+  /* ================= CONTAINER ================= */
   container: {
     flex: 1,
-    backgroundColor: BG,
-    padding: 16,
-    marginTop: 50,
+    backgroundColor: "#F7F9FC",
+    paddingHorizontal: 16,
+    paddingTop: 60, 
   },
 
-  /* Profile Card */
+  /* ================= PROFILE CARD ================= */
   profileCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 16,
+    backgroundColor: "#1B3C53",
+    borderRadius: 18,
     padding: 16,
-    marginBottom: 20,
-    elevation: 4,
+    marginTop: 16,
+    marginBottom: 24,
   },
 
   avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: "#eee",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#456882",
+  },
+
+  avatarPlaceholder: {
+    backgroundColor: "#456882",
+  },
+
+  avatarInitials: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "700",
   },
 
   name: {
     fontSize: 18,
     fontWeight: "700",
-    color: PRIMARY,
+    color: "#fff",
   },
 
   email: {
-    marginTop: 4,
-    color: "#6b7f90",
-    fontSize: 14,
+    fontSize: 13,
+    color: "#dbe4ec",
+    marginTop: 2,
   },
 
-  /* Menu Grid */
+  /* ================= MENU GRID ================= */
   menuGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -51,24 +61,35 @@ const styles = StyleSheet.create({
   menuCard: {
     width: "48%",
     backgroundColor: "#fff",
-    borderRadius: 14,
-    paddingVertical: 22,
-    marginBottom: 14,
+    borderRadius: 16,
+    paddingVertical: 20,
+    marginBottom: 16,
     alignItems: "center",
-    elevation: 3,
+    justifyContent: "center",
+
+    /* Shadow (Android + iOS) */
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 4,
   },
 
   menuText: {
-    marginTop: 10,
+    marginTop: 8,
     fontSize: 14,
     fontWeight: "600",
-    color: PRIMARY,
+    color: "#234C6A",
   },
 
+  /* ================= DANGER / LOGOUT ================= */
   dangerCard: {
     borderWidth: 1,
-    borderColor: "#E63946",
+    borderColor: "#F3B6BC",
+    backgroundColor: "#FFF5F6",
+  },
+
+  dangerText: {
+    color: "#E63946",
   },
 });
-
-export default styles;
