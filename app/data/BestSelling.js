@@ -10,9 +10,9 @@ export const BEST_SELLING = [
       "https://i.pinimg.com/736x/79/60/90/7960906fd0f2450299f499944212a806.jpg"
     ],
     category: "Fashion",
+     description: "Comfortable cotton t-shirt perfect for casual wear.",
   
   },
-
 
 {
     id: "B2",
@@ -24,8 +24,8 @@ export const BEST_SELLING = [
       "https://i.pinimg.com/736x/79/60/90/7960906fd0f2450299f499944212a806.jpg"
     ],
     category: "Fashion",
+      description: "Stylish formal shirt suitable for office and events.",
   },
-
 
   {
     id: "B3", 
@@ -38,6 +38,7 @@ export const BEST_SELLING = [
       "https://i.pinimg.com/736x/17/a0/01/17a0011e752e69ee5cc37aa01cc9f791.jpg"
     ],
     category: "Fashion",
+      description : "Durable and comfortable shoes for everydat use."
   },
 
 

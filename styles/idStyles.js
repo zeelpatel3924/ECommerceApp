@@ -87,22 +87,26 @@ export default StyleSheet.create({
     elevation: 5, // for Android shadow
   },
 
- 
   /* ================= PRODUCT INFO ================= */
-  title: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: "#1B3C53",
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between", //  left & right
     marginTop: 16,
     paddingHorizontal: 16,
-    lineHeight: 28,
+  },
+
+  title: {
+    flex: 1, // prevents overlap
+    fontSize: 25,
+    color: "#0F172A",
+    fontWeight: "700",
   },
 
   ratingRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
-    marginTop: 6,
+    marginLeft: 10,
   },
 
   ratingText: {
@@ -190,36 +194,41 @@ export default StyleSheet.create({
     color: "#234C6A",
   },
 
-  price: {
-    paddingHorizontal: 16,
-    marginTop: 14,
-    fontSize: 24,
-    fontWeight: "800",
-    color: PRIMARY,
+  priceQtyRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 10,
+    paddingHorizontal :16,
   },
 
-  /* ================= QUANTITY ================= */
+  price: {
+    fontSize: 25,
+    fontWeight: "900",
+    color: "#0F172A",
+
+  },
+
   qtyRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
-    paddingHorizontal: 16,
+    backgroundColor:"#a8b3cdff",
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+fontWeight:"bold"
   },
 
   qtyBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    backgroundColor: "#e6edf3",
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 4,
+    
   },
 
   qty: {
-    marginHorizontal: 22,
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#1B3C53",
+    marginHorizontal: 10,
+    fontSize: 14,
+    color: "#0F172A",
+    fontWeight:"900"
   },
 
   addedText: {
@@ -233,27 +242,60 @@ export default StyleSheet.create({
   /* ================= STICKY BAR ================= */
   stickyBar: {
     position: "absolute",
-    bottom: 0,
-    width: "100%",
-    padding: 22,
-    backgroundColor: "#1b3c53",
-    borderTopLeftRadius: 22,
-    borderTopRightRadius: 22,
-    elevation: 12,
+    bottom: 12,
+    left: 0,
+    right: 0,
+    borderRadius: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12,
+    backgroundColor: "#a8b3cdff",
+    borderTopWidth: 1,
+    borderTopColor: "#EEF2F7",
   },
 
-  cartBtn: {
-    backgroundColor: PRIMARY,
-    paddingVertical: 16,
+  cartIconBtn: {
+    width: 80,
+    height: 50,
+    borderRadius: 14,
+    backgroundColor: "#F1F5F9",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 20,
+  },
+
+  badge: {
+    position: "absolute",
+    top: -6,
+    right: -6,
+    backgroundColor: "#e63946",
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 4,
+  },
+
+  badgeText: {
+    color: "#fff",
+    fontSize: 11,
+    fontWeight: "700",
+  },
+
+  ViewBtn: {
+    flex: 1,
+    height: 50,
     borderRadius: 16,
+    backgroundColor: "#234C6A",
+    justifyContent: "center",
     alignItems: "center",
   },
 
-  cartText: {
-    color: "#fff",
+  ViewBtnText: {
+    color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "700",
-    letterSpacing: 0.5,
   },
 
   /* ================= EMPTY ================= */

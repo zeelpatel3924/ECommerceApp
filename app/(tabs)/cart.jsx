@@ -11,14 +11,14 @@ import {
 import { useCart } from "../../context/CartContext";
 import styles from "../../styles/cartStyles";
 
-export default function Cart() {
-  const { cart, removeFromCart, increaseQty, decreaseQty, clearCart } = useCart();
+export default function Cart() { 
+  const { cart, removeFromCart, increaseQty, decreaseQty, clearCart } = 
+    useCart();
   const router = useRouter();
 
   const totalAmount = cart.reduce(
-    (sum, item) =>
-      sum + parseInt(item.price.replace(/[₹,]/g, "")) * item.qty,
-    0
+    (sum, item) => sum + parseInt(item.price.replace(/[₹,]/g, "")) * item.qty, 
+    0,
   );
 
   // Checkout handler
@@ -34,7 +34,7 @@ export default function Cart() {
             router.push("/home");
           },
         },
-      ]
+      ],
     );
   };
 
@@ -95,10 +95,10 @@ export default function Cart() {
               </View>
             </View>
 
-            {/* Delete Button */}
+            {/*Delete Button*/}
             <TouchableOpacity
               onPress={(e) => {
-                e.stopPropagation();
+                e.stopPropagation(); 
                 removeFromCart(item.id);
               }}
               style={styles.deleteBtn}
@@ -109,7 +109,7 @@ export default function Cart() {
         )}
       />
 
-      {/* Bottom Summary */}
+      {/*Bottom Summary*/}
       {cart.length > 0 && (
         <View style={styles.summary}>
           <View style={styles.totalRow}>
@@ -117,7 +117,7 @@ export default function Cart() {
             <Text style={styles.totalAmount}>₹{totalAmount}</Text>
           </View>
 
-          {/* Checkout Button */}
+          {/*Checkout Button*/}
           <TouchableOpacity style={styles.checkoutBtn} onPress={handleCheckout}>
             <Text style={styles.checkoutText}>Proceed to Checkout</Text>
           </TouchableOpacity>

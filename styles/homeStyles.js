@@ -3,32 +3,34 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     paddingTop: 45,
-    backgroundColor: "#d1d9e6",
+    backgroundColor: "#fffff5",
     padding: 16,
+  },
+  scrollContent: {
+    paddingBottom: 140,
+    flexGrow: 1,
   },
 
   /* Header */
 
-
   cartBadge: {
-  position: "absolute",
-  top: -10,
-  right: -6,
-  backgroundColor: "#456882",
-  borderRadius: 10,
-  minWidth: 18,
-  height: 18,
-  justifyContent: "center",
-  alignItems: "center",
-  paddingHorizontal: 4,
-},
+    position: "absolute",
+    top: -10,
+    right: -6,
+    backgroundColor: "#E63946",
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 4,
+  },
 
-cartBadgeText: {
-  color: "#fff",
-  fontSize: 11,
-  fontWeight: "700",
-},
-
+  cartBadgeText: {
+    color: "#fff",
+    fontSize: 11,
+    fontWeight: "700",
+  },
 
   header: {
     flexDirection: "row",
@@ -48,44 +50,42 @@ cartBadgeText: {
   },
   headerIcons: { flexDirection: "row" },
 
-   /* Search */
-searchBox: {
-  flexDirection: "row",
-  alignItems: "center",
-  backgroundColor: "#fff",
-  borderRadius: 24,
+  /* Search */
+  searchBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 24,
 
-  height: 48,
-  width: "100%",          // responsive
-  maxWidth: 420,          // optional for tablets
+    height: 48,
+    width: "100%", // responsive
+    maxWidth: 420, // optional for tablets
 
-  marginTop: 5,
-  paddingHorizontal: 16,
-  elevation: 4,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 3 },
-  shadowOpacity: 0.08,
-  shadowRadius: 6,
-},
+    marginTop: 5,
+    paddingHorizontal: 16,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+  },
 
-searchInput: {
-  flex: 1,
-  marginLeft: 12,        // reduced for small screens
+  searchInput: {
+    flex: 1,
+    marginLeft: 12, // reduced for small screens
 
-  fontSize: 15,
-  color: "#1B3C53",
-  fontWeight: "500",
+    fontSize: 15,
+    color: "#1B3C53",
+    fontWeight: "500",
 
-  paddingVertical: 0,
-},
+    paddingVertical: 0,
+  },
 
-searchPlaceholder: {
-  fontSize: 15,
-  color: "#9aa7b2",
-  fontWeight: "400",
-},
-
-
+  searchPlaceholder: {
+    fontSize: 15,
+    color: "#9aa7b2",
+    fontWeight: "400",
+  },
 
   categoryChip: {
     paddingHorizontal: 14,
@@ -154,7 +154,7 @@ searchPlaceholder: {
   },
   card: {
     width: "48%",
-    backgroundColor: "#456882",
+    backgroundColor: "#2A3948",
     borderRadius: 6,
     padding: 8,
     marginBottom: 14,
@@ -200,7 +200,7 @@ searchPlaceholder: {
     fontWeight: "bold",
   },
 
-  Grocerycard:{
+  Grocerycard: {
     width: 140,
     backgroundColor: "#fff",
     borderRadius: 6,
@@ -212,7 +212,7 @@ searchPlaceholder: {
   GroceryImage: {
     width: "100%",
     height: 110,
-    borderRadius:6,
+    borderRadius: 6,
     overflow: "hidden",
   },
 

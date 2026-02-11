@@ -4,19 +4,19 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import {
-    Image,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import CartBadge from "../../components/CartBadge";
 import styles from "../../styles/categoriesStyles";
 import Bestselling from "../data/BestSelling";
 import CTALL_PRODUCTS from "../data/CTallproducts";
 import GROCERY_PRODUCTS from "../data/Groceryproducts";
 import PRODUCTS from "../data/products";
-import CartBadge from "../../components/CartBadge";
 
 const categories = [
   "All",
@@ -46,21 +46,19 @@ const products = [
 ];
 
 export default function Categories() {
-
   const { category: initialCategory } = useLocalSearchParams();
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchText, setSearchText] = useState("");
 
-  // if navigated with ?category=Mobiles, auto-select it
   useEffect(() => {
     if (initialCategory) {
       setSelectedCategory(initialCategory as string);
     }
   }, [initialCategory]);
 
-  /* 🔥 FINAL FILTER LOGIC */
+  /*  FINAL FILTER LOGIC */
   const filteredProducts = useMemo(() => {
     return products.filter((item) => {
       const matchCategory =
@@ -107,7 +105,7 @@ export default function Categories() {
           </View>
 
           {/* CART */}
-          <CartBadge/>
+          <CartBadge color="#ffff" />
         </View>
       </View>
 

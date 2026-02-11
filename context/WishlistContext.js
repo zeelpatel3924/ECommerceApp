@@ -1,37 +1,75 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, useContext, useEffect, useState } from "react";
+
+
+
+
+
+
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+import { useSelector } from "react-redux";
+import { safeGet, safeRemove, safeSet, wishlistKeyFor } from "../utils/storage";
 
 const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
+  const user = useSelector((s) => s.auth.user);
+  const saveTimer = useRef(null);
+  const mounted = useRef(true);
 
-  // load wishlist from storage
+  // load wishlist for user or guest and merge guest on login
   useEffect(() => {
-    let mounted = true;
-    (async () => {
+    mounted.current = true;
+
+    const load = async () => {
       try {
-        const raw = await AsyncStorage.getItem("wishlist");
-        if (raw && mounted) setWishlist(JSON.parse(raw));
-      } catch (_e) {
-        // ignore
+        const guest = (await safeGet(wishlistKeyFor(null))) || [];
+        const userList = (await safeGet(wishlistKeyFor(user))) || [];
+
+        if (user) {
+          // merge unique items
+          const merged = mergeWishlist(userList, guest);
+          setWishlist(merged);
+          if (guest.length > 0) {
+            await safeRemove(wishlistKeyFor(null));
+            await safeSet(wishlistKeyFor(user), merged);
+          }
+        } else {
+          setWishlist(guest);
+        }
+      } catch (err) {
+        console.warn("Wishlist load error", err);
       }
-    })();
-    return () => {
-      mounted = false;
     };
-  }, []);
 
-  // save wishlist whenever it changes
+    load();
+
+    return () => {
+      mounted.current = false;
+    };
+  }, [user]);
+
+  // save wishlist whenever it changes (debounced)
   useEffect(() => {
-    (async () => {
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+
+    saveTimer.current = setTimeout(async () => {
       try {
-        await AsyncStorage.setItem("wishlist", JSON.stringify(wishlist));
-      } catch (_e) {
-        // ignore
+        await safeSet(wishlistKeyFor(user), wishlist);
+      } catch (err) {
+        console.warn("Wishlist save error", err);
       }
-    })();
-  }, [wishlist]);
+    }, 300);
+
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+    };
+  }, [wishlist, user]);
 
   const addToWishlist = (product) => {
     setWishlist((prev) => {
@@ -41,6 +79,15 @@ export const WishlistProvider = ({ children }) => {
       return prev;
     });
   };
+
+  function mergeWishlist(a = [], b = []) {
+    const map = new Map();
+    a.forEach((it) => map.set(it.id, it));
+    b.forEach((it) => {
+      if (!map.has(it.id)) map.set(it.id, it);
+    });
+    return Array.from(map.values());
+  }
 
   const removeFromWishlist = (productId) => {
     setWishlist((prev) => prev.filter((item) => item.id !== productId));

@@ -1,10 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { useCart } from "../../context/CartContext";
 
 const PRIMARY = "#1B3C53";
-const INACTIVE = "#9aa6b2";
+const INACTIVE = "#6b7f90";
 const { width } = Dimensions.get("window");
 
 export default function TabLayout() {
@@ -14,11 +14,7 @@ export default function TabLayout() {
   const renderIcon = (name, focused, badge = false) => (
     <View style={focused ? styles.glowWrapper : styles.inactiveWrapper}>
       <View style={focused ? styles.activeTab : styles.inactiveTab}>
-        <Ionicons
-          name={name}
-          size={26}
-          color={focused ? "#fff" : INACTIVE}
-        />
+        <Ionicons name={name} size={26} color={focused ? "#fff" : INACTIVE} />
 
         {badge && totalItems > 0 && (
           <View style={styles.badge}>
@@ -73,16 +69,14 @@ export default function TabLayout() {
   );
 }
 
-
-
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
     bottom: 24,
 
     alignSelf: "center",
-    width: width -1,     // 🔥 responsive width
-    maxWidth: 440,        // optional limit for tablets
+    width: width - 1,
+    maxWidth: 440,
 
     height: 72,
     borderRadius: 40,
@@ -154,6 +148,4 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "700",
   },
-
-
 });

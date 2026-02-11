@@ -3,9 +3,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default */
 
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React from "react";
+
+import { useCart } from "../../context/CartContext";
+
 import {
   Animated,
   Dimensions,
@@ -14,7 +17,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
 import styles from "../../styles/idStyles";
 import BEST_SELLING from "../data/BestSelling";
@@ -26,6 +28,8 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function ProductDetails() {
   const { cart } = useCart();
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+
   const { id } = useLocalSearchParams();
   const { addToCart } = useCart();
   const router = useRouter();
@@ -59,7 +63,6 @@ export default function ProductDetails() {
   }
 
   const handleAddToCart = () => {
-    // animate product image scale for feedback
     Animated.sequence([
       Animated.timing(scaleAnim, {
         toValue: 0.9,
@@ -197,23 +200,62 @@ export default function ProductDetails() {
           </View>
         </View>
 
-        {/* Title */}
-        <Text style={styles.title}>{product.title}</Text>
-
-        {/* Rating */}
-        <View style={styles.ratingRow}>
-          <Ionicons name="star" size={18} color="#f5a623" />
-          <Text style={styles.ratingText}>
-            {product.rating || 4.5} • {product.reviews || 120} reviews
+        <View style={styles.titleRow}>
+          {/* Title */}
+          <Text style={styles.title} numberOfLines={1}>
+            {product.title}
           </Text>
+
+          {/* Rating */}
+          <View style={styles.ratingRow}>
+            <Feather name="star" size={18} color="#f5a623" />
+            <Text style={styles.ratingText}>
+              {product.review} ({product.rating})
+            </Text>
+          </View>
         </View>
 
         {/* Description */}
-        <Text style={styles.description}>
-          {product.description || "High quality product with best materials."}
+        <Text style={styles.description}>{product.description}</Text>
+
+        {/* Stock */}
+        <Text
+          style={{
+            color: product.stock < 5 ? "#e63946" : "#2a9d8f",
+            marginLeft: 14,
+            fontWeight: "600",
+          }}
+        >
+          {product.stock < 5 ? "Low stock" : "In stock"}
         </Text>
 
-        {/* ================= RELATED PRODUCTS ================= */}
+        <View style={styles.priceQtyRow}>
+          {/* Price */}
+          <Text style={styles.price}> {product.price}</Text>
+
+          {/* Quantity */}
+          <View style={styles.qtyRow}>
+            <TouchableOpacity
+              style={styles.qtyBtn}
+              onPress={() => qty > 1 && setQty(qty - 1)}
+            >
+              <Ionicons name="remove" size={18} color="#1B3C53" />
+            </TouchableOpacity>
+
+            <Text style={styles.qty}>{qty}</Text>
+
+            <TouchableOpacity
+              style={styles.qtyBtn}
+              onPress={() => setQty(qty + 1)}
+            >
+              <Ionicons name="add" size={18} color="#1B3C53" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {added && <Text style={styles.addedText}> Added to cart</Text>}
+
+        {/* ================= RELATED PRODUCTS ================== */}
         {relatedProducts.length > 0 && (
           <View style={styles.relatedSection}>
             <Text style={styles.relatedTitle}>Related Products</Text>
@@ -243,46 +285,33 @@ export default function ProductDetails() {
             </ScrollView>
           </View>
         )}
-
-        {/* Price */}
-        <Text style={styles.price}> {product.price}</Text>
-
-        {/* Stock */}
-        <Text
-          style={{
-            color: product.stock < 5 ? "#e63946" : "#2a9d8f",
-            fontWeight: "600",
-          }}
-        >
-          {product.stock < 5 ? "Low stock" : "In stock"}
-        </Text>
-
-        {/* Quantity */}
-        <View style={styles.qtyRow}>
-          <TouchableOpacity
-            style={styles.qtyBtn}
-            onPress={() => qty > 1 && setQty(qty - 1)}
-          >
-            <Ionicons name="remove" size={22} color="#1B3C53" />
-          </TouchableOpacity>
-
-          <Text style={styles.qty}>{qty}</Text>
-
-          <TouchableOpacity
-            style={styles.qtyBtn}
-            onPress={() => setQty(qty + 1)}
-          >
-            <Ionicons name="add" size={22} color="#1B3C53" />
-          </TouchableOpacity>
-        </View>
-
-        {added && <Text style={styles.addedText}> Added to cart</Text>}
       </ScrollView>
 
       {/* Sticky Bar */}
       <View style={styles.stickyBar}>
-        <TouchableOpacity style={styles.cartBtn} onPress={handleAddToCart}>
-          <Text style={styles.cartText}>Add to Cart</Text>
+        {/* Left Cart Icon */}
+        <TouchableOpacity
+          style={styles.cartIconBtn}
+          onPress={handleAddToCart}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="cart-outline" size={27} color="#0F172A" />
+
+          {/* Cart Badge */}
+          {totalItems > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{totalItems}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
+        {/* View Cart Button */}
+        <TouchableOpacity
+          style={styles.ViewBtn}
+          onPress={() => router.push("/cart")}
+          activeOpacity={0.9}
+        >
+          <Text style={styles.ViewBtnText}>View cart</Text>
         </TouchableOpacity>
       </View>
     </>

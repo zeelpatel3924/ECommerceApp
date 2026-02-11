@@ -13,6 +13,9 @@
          ],
        price: "₹1000",
        category: "toys",
+       rating: 4,
+       review :"3 k",
+        description :"A high-performance sports car with sleek design and advanced features."
      },
     {
        id: "CA2",
@@ -23,7 +26,9 @@
        ],
        price:"₹1000",
        category:"Electronics", 
-    },
+       rating : 3.9,
+       review : " 5 k",
+       description : "Premium noise-cancelling headphones with exceptional sound quality."   },
     {
        id: "CA3",
        title:"Cetaphil light gel sunscreen SPF 50 ",
@@ -33,6 +38,9 @@
        ],
        price: "₹459",
        category: "beauty",
+       rating : 3.1,
+       review :"2 k",
+       description :" Light gel sunscreen that prevents sun damage and keep skin hydrates",
     },
     {
        id: "CA4",
@@ -43,6 +51,10 @@
        ],
        price:"₹ 1,25,000",
        category:"mobiles",
+       review : "2.3 M",
+       rating :4.8 ,
+       description : "Flagship smartphone with cutting-edge features and stunning diplay.",
+
     },
      {
        id: "CA5",
@@ -53,6 +65,10 @@
        ],
        price:"₹25,000",
        category:"Music",
+       rating : 4.1,
+       review :"1.5 M",
+       description : "Wireless earbuds with active noise cancellation and superior sound quality.",
+
     },
 
       {
@@ -61,6 +77,9 @@
        image: "https://i.pinimg.com/1200x/7c/64/9a/7c649a0d09c4179a68c6f0a32b9284d3.jpg",
        price:"₹13,999",
        category:"Appliances",
+       rating : 4.3,
+       review :"500 k",
+       description : "Compact microwave over with multiple cooking modes and easy-to-use controls.",
     },
 
      {

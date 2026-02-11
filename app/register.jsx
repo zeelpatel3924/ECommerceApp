@@ -110,8 +110,8 @@ export default function Register() {
             },
           ]}
         >
-          <Text style={styles.brand}>ShopEase</Text>
-          <Text style={styles.subtitle}>Create your account</Text>
+          <Text style={styles.brand}>Create Account</Text>
+          <Text style={styles.subtitle}>Create a new account</Text>
 
           {/* Name */}
           <Controller
@@ -124,7 +124,7 @@ export default function Register() {
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                placeholder="John Doe"
+                placeholder="Enter your name"
                 error={errors.name?.message}
                 floatingLabel
               />
@@ -145,7 +145,7 @@ export default function Register() {
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
-                placeholder="you@example.com"
+                placeholder="Enter your email"
                 keyboardType="email-address"
                 error={errors.email?.message}
                 floatingLabel

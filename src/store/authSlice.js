@@ -1,11 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { secureGet, secureSet } from "../../utils/secureStorage";
 
 export const registerUser = createAsyncThunk("auth/register", async (user) => {
   const users = JSON.parse(await AsyncStorage.getItem("users")) || [];
-  users.push(user);
+  const withId = { ...user };
+  if (!withId.id) withId.id = Date.now().toString();
+  users.push(withId);
   await AsyncStorage.setItem("users", JSON.stringify(users));
-  return user;
+  return withId;
 });
 
 export const loginUser = createAsyncThunk(
@@ -18,18 +21,30 @@ export const loginUser = createAsyncThunk(
     );
 
     if (!found) return null;
-
-    await AsyncStorage.setItem("session", JSON.stringify(found));
+    try {
+      await secureSet("session", JSON.stringify(found));
+    } catch (_err) {
+      await AsyncStorage.setItem("session", JSON.stringify(found));
+    }
     return found;
   },
 );
 
 export const initAuth = createAsyncThunk("auth/init", async () => {
-  const session = await AsyncStorage.getItem("session");
   try {
-    return session ? JSON.parse(session) : null;
-  } catch {
-    return null;
+    const session = await secureGet("session");
+    try {
+      return session ? JSON.parse(session) : null;
+    } catch {
+      return null;
+    }
+  } catch (_err) {
+    try {
+      const session = await AsyncStorage.getItem("session");
+      return session ? JSON.parse(session) : null;
+    } catch {
+      return null;
+    }
   }
 });
 
@@ -57,8 +72,6 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        // Optionally set user after registration
-        // state.user = action.payload;
       })
       .addCase(initAuth.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -69,4 +82,3 @@ const authSlice = createSlice({
 export const { logout, setUser } = authSlice.actions;
 
 export default authSlice.reducer;
-  

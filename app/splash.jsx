@@ -10,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 
 import { initAuth } from "../src/store/authSlice";
@@ -59,7 +58,7 @@ export default function Splash() {
         session = await getUserSession();
       } catch (_e) {}
 
-      const elapsed = Date.now() - start;
+      const elapsed = Date.now() - start; 
       if (elapsed < 3000) {
         await new Promise((r) => setTimeout(r, 3000 - elapsed));
       }

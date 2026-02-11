@@ -34,7 +34,8 @@ export default function Home() {
   ];
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}
+    contentContainerStyle ={styles.scrollContent}>
       <Header />
       <SearchBar />
       <CategoryList categories={categories} />

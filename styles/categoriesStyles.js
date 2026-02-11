@@ -1,7 +1,7 @@
 
 import { StyleSheet } from "react-native";
 
-const PRIMARY = "#234C6A";
+const PRIMARY = "#1B3C53";
 const BG = "#d1d9e6";
 
 const styles = StyleSheet.create({
@@ -87,7 +87,7 @@ categoryText: {
 },
 
 activeCategory: {
-  backgroundColor: "#fff",
+  backgroundColor: "#ffb703",
   borderRadius: 6,               // smaller radius
   marginHorizontal: 12,            // less horizontal margin
   paddingVertical: 16,             // optional padding inside active
@@ -103,7 +103,7 @@ activeCategoryText: {
 
 categoryContainer: {
   width: 135,
-  backgroundColor: "#456882",
+  backgroundColor: "#234C6A",
   paddingVertical: 20,
   borderTopRightRadius: 10,
   borderBottomRightRadius: 20,
@@ -123,7 +123,7 @@ pinButton: {
   transform: [{ translateY: -18 }],
   width: 45,
   height: 45,
-  backgroundColor: "#234C6A",
+  backgroundColor: "#ffb703",
   borderRadius: 15,
   justifyContent: "center",
   alignItems: "center",
@@ -137,7 +137,7 @@ pinButton: {
   flex: 1,
   paddingHorizontal: 10,
   paddingTop: 10,
-  backgroundColor: "#d1d9e6",
+  backgroundColor: "#f5f5f5",
 },
 
 verticalGrid: {
@@ -220,7 +220,7 @@ productPrice: {
 noDataText: {
   marginTop: 30,
   textAlign: "center",
-  color: "#888",
+  color: "#555",
   fontSize: 14,
   fontWeight: "500",
 },

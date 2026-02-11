@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
+
 import { router } from "expo-router";
 import { useState, useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -106,7 +105,7 @@ export default function Login() {
           },
         ]}
       >
-        <Text style={styles.brand}>ShopEase</Text>
+        <Text style={styles.brand}>Log in</Text>
         <Text style={styles.subtitle}>Welcome back! Login to continue</Text>
 
         {/* Email */}
@@ -122,7 +121,7 @@ export default function Login() {
               value={value}
               onChange={onChange}
               onBlur={onBlur}
-              placeholder="you@example.com"
+              placeholder="Enter your email"
               keyboardType="email-address"
               error={errors.email?.message}
               floatingLabel
@@ -147,7 +146,7 @@ export default function Login() {
               placeholder="Your password"
               secureTextEntry
               error={errors.password?.message}
-              floatingLabel
+              floatingLabel 
             />
           )}
           name="password"
