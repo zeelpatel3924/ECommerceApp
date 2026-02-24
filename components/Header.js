@@ -1,14 +1,13 @@
-import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useCart } from "../context/CartContext";
+import { Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
+import { selectCartCount } from "../src/store/cartSlice";
 import styles from "../styles/homeStyles";
 
 export default function Header() {
   const router = useRouter();
-  const { cart } = useCart();
-
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalItems = useSelector(selectCartCount);
 
   return (
     <View style={styles.header}>
@@ -16,7 +15,7 @@ export default function Header() {
         <Text style={styles.subText}>Location</Text>
         <View style={styles.locationRow}>
           <Ionicons name="location-outline" size={16} color="#1B1B1B" />
-          <Text style={styles.locationText}> Mumbai (IND)</Text>
+          <Text style={styles.locationText}> VALSAD (IND)</Text>
         </View>
       </View>
 

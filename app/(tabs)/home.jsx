@@ -1,6 +1,5 @@
-/* eslint-disable import/no-duplicates */
-import React from "react";
-import { ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
 import BannerSlider from "../../components/BannerSlider";
 import CategoryList from "../../components/CategoryList";
@@ -9,23 +8,82 @@ import HorizontalProductList from "../../components/HorizontalProductList";
 import ProductGrid from "../../components/ProductGrid";
 import SearchBar from "../../components/SearchBar";
 
-import { IMAGES } from "@/constants/image";
-import ProductGridHeader from "../../components/SectionHeader";
-import { Best_SellingHeader, Grocery_ProductHeader, TopProductHeader  } from "../../components/SectionHeader";
 import styles from "../../styles/homeStyles";
-import { BEST_SELLING } from "../data/BestSelling";
-import { GROCERY_PRODUCTS } from "../data/Groceryproducts";
-import { PRODUCTS } from "../data/products";
+
+import SectionHeader from "../../components/SectionHeader";
+import {
+  getAllProducts,
+  getCategories,
+  getProductsByCategory,
+} from "../../src/api/productsApi";
 
 export default function Home() {
-  const categories = [
-    { id: 1, name: "Mobiles", image: IMAGES.ct1 },
-    { id: 2, name: "Fashion", image: IMAGES.ct2 },
-    { id: 3, name: "Electronics", image: IMAGES.ct3 },
-    { id: 4, name: "Appliances", image: IMAGES.ct4 },
-    { id: 5, name: "Home & Kitchen", image: IMAGES.ct5 },
-    { id: 6, name: "Sports", image: IMAGES.ct6 },
-  ];
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [bestSelling, setBestSelling] = useState([]);
+  const [groceryProducts, setGroceryProducts] = useState([]);
+
+  useEffect(() => {
+    loadInitialData();
+  }, []);
+
+  const loadInitialData = async () => {
+    try {
+      const [prodData, catData] = await Promise.all([
+        getAllProducts(),
+        getCategories(),
+      ]);
+
+      setProducts(prodData);
+      setCategories([{ slug: "all", name: "All" }, ...catData]);
+
+      // Best Selling (highest rating)
+      const sortedByRating = [...prodData]
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 10);
+
+      setBestSelling(sortedByRating);
+
+      //  Grocery Products
+      const groceryData = await getProductsByCategory("groceries");
+      setGroceryProducts(groceryData.slice(0, 10));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCategorySelect = async (slug) => {
+    setSelectedCategory(slug);
+    setLoading(true);
+
+    try {
+      if (slug === "all") {
+        const data = await getAllProducts();
+        setProducts(data);
+      } else {
+        const data = await getProductsByCategory(slug);
+        setProducts(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <ActivityIndicator
+        size="large"
+        style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+      />
+    );
+  }
+  
 
   const banners = [
     "https://t4.ftcdn.net/jpg/17/91/88/69/240_F_1791886944_DDsG9lPlQ60vKCXcV5drarkEmVusITcm.jpg",
@@ -34,27 +92,40 @@ export default function Home() {
   ];
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}
-    contentContainerStyle ={styles.scrollContent}>
-      <Header />
-      <SearchBar />
-      <CategoryList categories={categories} />
-      <BannerSlider banners={banners} />
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.headerWrapper}>
+        <Header />
+      </View>
 
-      <ProductGridHeader title="Suggested for you" />
-      <ProductGrid products={PRODUCTS.slice(0, 4)} />
+      {/* Vertical Scroll */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <SearchBar />
 
-      <Best_SellingHeader title="Best Selling" />
-      <HorizontalProductList data={BEST_SELLING} />
+        {/* CATEGORY FILTER */}
+        <CategoryList
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={handleCategorySelect}
+        />
 
-      <Grocery_ProductHeader title="Grocery Products" />
-      <HorizontalProductList data={GROCERY_PRODUCTS} />
+        <BannerSlider banners={banners} />
 
-      <TopProductHeader title="Top Products" />
-      <ProductGrid products={PRODUCTS} />
-    </ScrollView>
+        <SectionHeader title="Suggested for you" />
+        <ProductGrid products={products.slice(0, 4)} />
+
+        <SectionHeader title="Best Selling" type="bestSelling" />
+        <HorizontalProductList data={bestSelling} />
+
+        <SectionHeader title="Grocery Products" category="groceries" />
+        <HorizontalProductList data={groceryProducts} />
+
+        <SectionHeader title="Top Products" type="topProducts" />
+        <ProductGrid products={products} />
+      </ScrollView>
+    </View>
   );
 }
-
-//navigation page banavanu je badh page handdle kare
-//setting ma hindi english

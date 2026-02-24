@@ -1,29 +1,60 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const styles = StyleSheet.create({
+  /* ================= SCREEN ================= */
   container: {
+    flex: 1,
     paddingTop: 45,
-    backgroundColor: "#fffff5",
-    padding: 16,
+    backgroundColor: "#F8FAFC",
+    paddingHorizontal: 16,
   },
+
   scrollContent: {
     paddingBottom: 140,
     flexGrow: 1,
   },
 
-  /* Header */
+  /* ================= HEADER ================= */
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 18,
+  },
 
+  subText: {
+    color: "#64748B",
+    fontSize: 12,
+  },
+
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  locationText: {
+    color: "#1E293B",
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  headerIcons: {
+    flexDirection: "row",
+    gap: 14,
+  },
+
+  /* ================= CART BADGE ================= */
   cartBadge: {
     position: "absolute",
-    top: -10,
+    top: -6,
     right: -6,
-    backgroundColor: "#E63946",
-    borderRadius: 10,
-    minWidth: 18,
-    height: 18,
+    backgroundColor: "#EF4444",
+    borderRadius: 12,
+    minWidth: 20,
+    height: 20,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 4,
+    paddingHorizontal: 5,
   },
 
   cartBadgeText: {
@@ -32,66 +63,41 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  subText: {
-    color: "#1B1B1B",
-    fontSize: 12,
-  },
-  locationRow: { flexDirection: "row", alignItems: "center" },
-  locationText: {
-    color: "#1B1B1B",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  headerIcons: { flexDirection: "row" },
-
-  /* Search */
+  /* ================= SEARCH ================= */
   searchBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 24,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 30,
+    height: 50,
+    paddingHorizontal: 18,
+    marginTop: 10,
 
-    height: 48,
-    width: "100%", // responsive
-    maxWidth: 420, // optional for tablets
-
-    marginTop: 5,
-    paddingHorizontal: 16,
-    elevation: 4,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
-    shadowRadius: 6,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   searchInput: {
     flex: 1,
-    marginLeft: 12, // reduced for small screens
-
+    marginLeft: 10,
     fontSize: 15,
-    color: "#1B3C53",
+    color: "#1E293B",
     fontWeight: "500",
-
-    paddingVertical: 0,
   },
 
   searchPlaceholder: {
-    fontSize: 15,
-    color: "#9aa7b2",
-    fontWeight: "400",
+    color: "#94A3B8",
   },
 
+  /* ================= CATEGORY CHIP ================= */
   categoryChip: {
-    paddingHorizontal: 14,
+    paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#e9edf3",
+    backgroundColor: "#E2E8F0",
     marginRight: 10,
   },
 
@@ -101,131 +107,165 @@ const styles = StyleSheet.create({
 
   categoryText: {
     fontSize: 13,
-    color: "#6b7f90",
+    color: "#475569",
     fontWeight: "600",
   },
 
   activeChipText: {
-    color: "#fff",
+    color: "#FFFFFF",
   },
 
-  /* Categories */
+  /* ================= CATEGORY BOX ================= */
   catBox: {
     alignItems: "center",
-    marginRight: 14,
-    marginBottom: 10,
+    marginRight: 16,
     marginTop: 20,
   },
+
   catImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#ffffff20",
-    padding: 10,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
   },
+
   catText: {
-    color: "#1B3c53",
+    color: "#1E293B",
     fontSize: 12,
-    marginTop: 6,
+    marginTop: 8,
     fontWeight: "600",
   },
 
-  /* Section */
+  /* ================= SECTION ================= */
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 16,
-  },
-  sectionTitle: {
-    color: "#1B3C53",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  viewAll: {
-    color: "#1B3C53",
-    fontSize: 13,
+    alignItems: "center",
+    marginVertical: 20,
   },
 
-  /* Product Grid */
+  sectionTitle: {
+    color: "#1E293B",
+    fontSize: 20,
+    fontWeight: "700",
+  },
+
+  viewAll: {
+    color: "#2563EB",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+
+  /* ================= PRODUCT GRID ================= */
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
   },
+
   card: {
     width: "48%",
-    backgroundColor: "#2A3948",
-    borderRadius: 6,
-    padding: 8,
-    marginBottom: 14,
-    position: "relative",
-  },
-  likeIcon: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    zIndex: 1,
-  },
-  productImage: {
-    width: "100%",
-    height: 140,
-    borderRadius: 6,
-    marginBottom: 10,
-  },
-  productTitle: {
-    color: "#ddd",
-    fontSize: 14,
-    fontWeight: "600",
-    marginBottom: 8,
-  },
-  bottomRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  viewBtn: {
-    backgroundColor: "#8FABD4",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
-  },
-  viewText: {
-    color: "#fff",
-    fontSize: 10,
-    fontWeight: "bold",
-  },
-  price: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "bold",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 5,
+    marginBottom: 16,
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
   },
 
+  likeIcon: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    zIndex: 1,
+  },
+
+  productImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+
+  productTitle: {
+    color: "#1E293B",
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 10,
+  },
+
+  bottomRow: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginTop: 8,
+},
+
+viewBtn: {
+  backgroundColor: "#2563EB",
+  paddingHorizontal: 12,
+  paddingVertical: 6,
+  borderRadius: 20,
+},
+
+viewText: {
+  color: "#fff",
+  fontSize: 11,
+  fontWeight: "700",
+},
+
+price: {
+  color: "#1B3C53",
+  fontSize: 16,
+  fontWeight: "700",
+},
+
+  /* ================= HORIZONTAL GROCERY CARD ================= */
   Grocerycard: {
-    width: 140,
-    backgroundColor: "#fff",
-    borderRadius: 6,
-    marginRight: 10,
-    padding: 8,
-    elevation: 3,
+    width: 150,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    marginRight: 14,
+    padding: 10,
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   GroceryImage: {
     width: "100%",
-    height: 110,
-    borderRadius: 6,
-    overflow: "hidden",
+    height: 120,
+    borderRadius: 10,
   },
 
   GroceryTitle: {
-    fontSize: 13,
-    fontWeight: "500",
-    marginTop: 6,
+    fontSize: 14,
+    fontWeight: "600",
+    marginTop: 8,
+    color: "#1E293B",
   },
 
   GroceryPrice: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "700",
-    color: "#1B3C53",
+    color: "#2563EB",
+    marginTop: 4,
   },
 });
+
 export default styles;

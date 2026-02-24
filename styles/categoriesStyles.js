@@ -1,11 +1,11 @@
+import { StyleSheet, Platform } from "react-native";
 
-import { StyleSheet } from "react-native";
-
-const PRIMARY = "#1B3C53";
-const BG = "#d1d9e6";
+const PRIMARY = "#052659";       // Same deep brand blue
+const SECONDARY = "#0A3D62";
+const ACCENT = "#FFB703";
+const BG = "#F4F7FB";            // Softer background
 
 const styles = StyleSheet.create({
-  /* ================= ROOT ================= */
   container: {
     flex: 1,
     backgroundColor: BG,
@@ -13,19 +13,51 @@ const styles = StyleSheet.create({
 
   /* ================= HEADER ================= */
   header: {
-    paddingTop:120,
-    paddingBottom: 22,
-    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingTop: 55,
+    paddingBottom: 18,
+    paddingHorizontal: 18,
     backgroundColor: PRIMARY,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    elevation: 6,
   },
 
- 
-  headerIcons: {
-    position: "absolute",
-    right: 20,
-    top: 50,
+  backButton: {
+    width: 42,
+    height: 42,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.15)",
+    borderRadius: 12,
+  },
+
+  searchBox: {
+    flex: 1,
     flexDirection: "row",
-    gap: 16,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 30,
+    height: 45,
+    marginHorizontal: 14,
+    paddingHorizontal: 15,
+
+    // iOS Shadow
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+
+    // Android Shadow
+    elevation: 4,
+  },
+
+  searchInput: {
+    flex: 1,
+    marginLeft: 8,
+    fontSize: 15,
+    color: PRIMARY,
   },
 
   /* ================= BODY ================= */
@@ -34,197 +66,125 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
- searchBox: {
-  flexDirection: "row",
-  alignItems: "center",
+  /* LEFT SIDEBAR */
+  categoryContainer: {
+    width: 140,
+    backgroundColor: SECONDARY,
+    paddingVertical: 25,
+    borderTopRightRadius: 25,
+    borderBottomRightRadius: 25,
+  },
 
-  marginLeft: 40,
-  justifyContent: "space-between",
-  backgroundColor: "#fff",
-  borderRadius: 24,
-  height: 48,
-   width: "80%",          // responsive
-   maxWidth: 420,          // optional for tablets
-  marginTop: 30,
-  elevation: 4,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 3 },
-  shadowOpacity: 0.08,
-  shadowRadius: 6,
-},
+  scrollContent: {
+    paddingBottom: 140,
+    flexGrow: 1,
+  },
 
-searchInput: {
-  flex: 1,
-  marginLeft: 10,
+  categoryClosed: {
+    width: 45,
+    paddingVertical: 0,
+  },
 
-  fontSize: 15,
-  color: "#1B3C53",
-  fontWeight: "500",
+  categoryItem: {
+    paddingVertical: 12,
+    alignItems: "center",
+    marginVertical: 4,
+  },
 
-  paddingVertical: 0, // keeps input vertically centered
-},
+  categoryText: {
+    fontSize: 13,
+    color: "#EAF1F8",
+    fontWeight: "500",
+  },
 
-searchPlaceholder: {
-  fontSize: 15,
-  color: "#9aa7b2",
-  fontWeight: "400",
-},
+  activeCategory: {
+    backgroundColor: ACCENT,
+    borderRadius: 10,
+    marginHorizontal: 12,
+    paddingVertical: 12,
+    elevation: 4,
+  },
 
+  activeCategoryText: {
+    color: PRIMARY,
+    fontWeight: "700",
+  },
 
-//left scrool
-categoryItem: {
-  paddingVertical: 8,            // smaller height
-  alignItems: "center",
-  marginBottom: 6,                // less space between items
-},
+  pinButton: {
+    position: "absolute",
+    right: -15,
+    top: "40%",
+    width: 38,
+    height: 38,
+    backgroundColor: ACCENT,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 6,
+  },
 
-
-categoryText: {
-  fontSize: 13,                   // smaller text
-  color: "#fff",
-  fontWeight: "500",
-  textAlign: "center",
-},
-
-activeCategory: {
-  backgroundColor: "#ffb703",
-  borderRadius: 6,               // smaller radius
-  marginHorizontal: 12,            // less horizontal margin
-  paddingVertical: 16,             // optional padding inside active
-  paddingHorizontal: 8,
-},
-
-activeCategoryText: {
-  color: PRIMARY,
-  fontWeight: "700",
-  fontSize: 13,                   // match category text size
-},
-
-
-categoryContainer: {
-  width: 135,
-  backgroundColor: "#234C6A",
-  paddingVertical: 20,
-  borderTopRightRadius: 10,
-  borderBottomRightRadius: 20,
-  elevation: 4,
-  position: "relative",
-},
-
-categoryClosed: {
-  width: 35, //  collapsed width
-  paddingVertical: 0,
-},
-
-pinButton: {
-  position: "absolute",
-  right: -12,
-  top: "40%",
-  transform: [{ translateY: -18 }],
-  width: 45,
-  height: 45,
-  backgroundColor: "#ffb703",
-  borderRadius: 15,
-  justifyContent: "center",
-  alignItems: "center",
-  elevation: 6,
-},
-
-
-
-  /* ================= RIGHT PRODUCT SCROLL ================= */
+  /* RIGHT PRODUCTS */
   productContainer: {
-  flex: 1,
-  paddingHorizontal: 10,
-  paddingTop: 10,
-  backgroundColor: "#f5f5f5",
-},
+    flex: 1,
+    paddingHorizontal: 14,
+    paddingTop: 15,
+    backgroundColor: BG,
+  },
 
-verticalGrid: {
-  paddingBottom: 20,
-  gap: 10,
-},
+  verticalGrid: {
+    paddingBottom: 20,
+  },
 
-verticalCard: {
-  backgroundColor: "#fff",
-  borderRadius: 6,
-  padding: 8,
-  marginBottom: 12,
-  elevation: 3,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.08,
-  shadowRadius: 2,
-},
+  gridContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
 
-backButton: {
-  position: "absolute",
-  top: 45,              // adjust if needed (status bar safe)
-  left: 16,
-  width: 42,
-  height: 42,
-  borderRadius: 21,
-  justifyContent: "center",
-  alignItems: "center",
-  zIndex: 10,
-  elevation: 6, 
-  shadowColor: "#000", 
-  shadowOpacity: 0.15,
-  shadowRadius: 6,
-  shadowOffset: { width: 0, height: 3 },
-},
+  gridCard: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 10,
+    marginBottom: 16,
+    width: "48%",
 
+    // iOS Shadow
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
 
+    // Android Shadow
+    elevation: 5,
+  },
 
-gridContainer: {
-  flexDirection: "row",
-  flexWrap: "wrap",   // allows multiple rows
-  justifyContent: "space-between",
-  paddingBottom: 20,
-},
+  productImage: {
+    width: "100%",
+    height: 130,
+    borderRadius: 14,
+    resizeMode: "cover",
+  },
 
-gridCard: {
-  backgroundColor: "#fff",
-  borderRadius: 6,
-  padding: 8,
-  marginBottom: 12,
-  width: "48%",        // 2 columns with spacing
-  elevation: 3,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.08,
-  shadowRadius: 2,
-},
+  productName: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginTop: 8,
+    color: "#1E293B",
+  },
 
-productImage: {
-  width: "100%",
-  height: 120,         // smaller height for compact grid
-  borderRadius: 10,
-  resizeMode: "cover",
-},
+  productPrice: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: PRIMARY,
+    marginTop: 6,
+  },
 
-productName: {
-  fontSize: 13,
-  fontWeight: "500",
-  marginTop: 6,
-  color: "#222",
-},
-
-productPrice: {
-  fontSize: 13,
-  fontWeight: "600",
-  color: PRIMARY,
-  marginTop: 4,
-},
-
-noDataText: {
-  marginTop: 30,
-  textAlign: "center",
-  color: "#555",
-  fontSize: 14,
-  fontWeight: "500",
-},
+  noDataText: {
+    marginTop: 40,
+    textAlign: "center",
+    color: "#64748B",
+    fontSize: 15,
+  },
 });
-
 
 export default styles;

@@ -10,19 +10,21 @@ export default StyleSheet.create({
 
   /* Header */
   header: {
-    backgroundColor: PRIMARY,
-    paddingTop: 55,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "#fff",
-    marginLeft: 16,
-  },
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingTop: 55,
+  paddingHorizontal: 16,
+  paddingBottom: 15,
+  backgroundColor: "#1B3C53",
+},
+
+headerTitle: {
+  color: "#fff",
+  fontSize: 18,
+  fontWeight: "600",
+},
+
 
   /* List */
   listContent: {

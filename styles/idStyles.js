@@ -194,42 +194,43 @@ export default StyleSheet.create({
     color: "#234C6A",
   },
 
-  priceQtyRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 10,
-    paddingHorizontal :16,
-  },
+  // priceQtyRow: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "space-between",
+  //   marginTop: 10,
+  //   paddingHorizontal :16,
+  // },
 
   price: {
+    flexDirection: "row",
     fontSize: 25,
     fontWeight: "900",
     color: "#0F172A",
-
+    paddingHorizontal: 16,
   },
 
-  qtyRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor:"#a8b3cdff",
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
-fontWeight:"bold"
-  },
+  //   qtyRow: {
+  //     flexDirection: "row",
+  //     alignItems: "center",
+  //     backgroundColor:"#a8b3cdff",
+  //     borderRadius: 8,
+  //     paddingHorizontal: 6,
+  //     paddingVertical: 4,
+  // fontWeight:"bold"
+  //   },
 
-  qtyBtn: {
-    padding: 4,
-    
-  },
+  //   qtyBtn: {
+  //     padding: 4,
 
-  qty: {
-    marginHorizontal: 10,
-    fontSize: 14,
-    color: "#0F172A",
-    fontWeight:"900"
-  },
+  //   },
+
+  //   qty: {
+  //     marginHorizontal: 10,
+  //     fontSize: 14,
+  //     color: "#0F172A",
+  //     fontWeight:"900"
+  //   },
 
   addedText: {
     marginTop: 12,

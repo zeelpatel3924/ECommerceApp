@@ -1,9 +1,8 @@
-/* eslint-disable import/no-named-as-default */
-
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   Text,
@@ -13,65 +12,87 @@ import {
 } from "react-native";
 import CartBadge from "../../components/CartBadge";
 import styles from "../../styles/categoriesStyles";
-import Bestselling from "../data/BestSelling";
-import CTALL_PRODUCTS from "../data/CTallproducts";
-import GROCERY_PRODUCTS from "../data/Groceryproducts";
-import PRODUCTS from "../data/products";
-
-const categories = [
-  "All",
-  "Fashion",
-  "Electronics",
-  "Mobiles",
-  "Grocery",
-  "Beauty",
-  "Home",
-  "Appliances",
-  "Toys",
-  "Sports",
-  "Automotive",
-  "Books",
-  "Music",
-  "Health",
-  "Jewelry",
-  "Furniture",
-  "Garden",
-];
-
-const products = [
-  ...PRODUCTS,
-  ...CTALL_PRODUCTS,
-  ...Bestselling,
-  ...GROCERY_PRODUCTS,
-];
+import {
+  getAllProducts,
+  getCategories,
+  getProductsByCategory,
+} from "../../src/api/productsApi";
 
 export default function Categories() {
-  const { category: initialCategory } = useLocalSearchParams();
+  const { category } = useLocalSearchParams();
 
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(true);
 
+  //Initial Load
   useEffect(() => {
-    if (initialCategory) {
-      setSelectedCategory(initialCategory as string);
+    loadInitialData();
+  }, []);
+
+  const loadInitialData = async () => {
+    try {
+      const [catData, prodData] = await Promise.all([
+        getCategories(),
+        getAllProducts(),
+      ]);
+
+      setCategories([{ slug: "all", name: "All" }, ...catData]);
+      setProducts(prodData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  }, [initialCategory]);
+  };
 
-  /*  FINAL FILTER LOGIC */
+  //handle url category param
+  useEffect(() => {
+    if (typeof category === "string") {
+      setSelectedCategory(category);
+      handleCategorySelect(category);
+    }
+  }, [category]);
+
+  // 🔥 Category Select
+  const handleCategorySelect = async (slug) => {
+    setSelectedCategory(slug);
+    setLoading(true);
+
+    try {
+      let data;
+
+      if (slug === "all") {
+        data = await getAllProducts();
+      } else {
+        data = await getProductsByCategory(slug);
+      }
+
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 🔥 Search Filter (local filter after API fetch)
   const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      const matchCategory =
-        selectedCategory === "All" ||
-        item.category?.toLowerCase() === selectedCategory.toLowerCase();
+    return products.filter((item) =>
+      item.title?.toLowerCase().includes(searchText.toLowerCase()),
+    );
+  }, [products, searchText]);
 
-      const matchSearch =
-        item.title?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.category?.toLowerCase().includes(searchText.toLowerCase());
-
-      return matchCategory && matchSearch;
-    });
-  }, [selectedCategory, searchText]);
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -85,33 +106,24 @@ export default function Categories() {
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
 
-        <View style={styles.headerIcons}>
-          {/* SEARCH */}
-          <View style={styles.searchBox}>
-            <Ionicons
-              name="search-outline"
-              marginLeft={12}
-              size={25}
-              color="#6b7f90"
-            />
-
-            <TextInput
-              value={searchText}
-              onChangeText={setSearchText}
-              placeholder="Search by product or category"
-              placeholderTextColor="#9aa7b2"
-              style={styles.searchInput}
-            />
-          </View>
-
-          {/* CART */}
-          <CartBadge color="#ffff" />
+        <View style={styles.searchBox}>
+          <Ionicons name="search-outline" size={18} color="#6b7f90" />
+          <TextInput
+            value={searchText}
+            onChangeText={setSearchText}
+            placeholder="Search products..."
+            placeholderTextColor="#9aa7b2"
+            style={styles.searchInput}
+          />
         </View>
+
+        <CartBadge color="#fff" />
       </View>
 
       {/* ================= BODY ================= */}
+
       <View style={styles.body}>
-        {/* ===== LEFT CATEGORY SIDEBAR ===== */}
+        {/* LEFT SIDEBAR */}
         <View
           style={[
             styles.categoryContainer,
@@ -119,43 +131,46 @@ export default function Categories() {
           ]}
         >
           {sidebarOpen && (
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {categories.map((item, index) => (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+            >
+              {categories.map((item) => (
                 <TouchableOpacity
-                  key={index}
-                  onPress={() => setSelectedCategory(item)}
+                  key={item.slug}
+                  onPress={() => handleCategorySelect(item.slug)}
                   style={[
                     styles.categoryItem,
-                    selectedCategory === item && styles.activeCategory,
+                    selectedCategory === item.slug && styles.activeCategory,
                   ]}
                 >
                   <Text
                     style={[
                       styles.categoryText,
-                      selectedCategory === item && styles.activeCategoryText,
+                      selectedCategory === item.slug &&
+                        styles.activeCategoryText,
                     ]}
                   >
-                    {item}
+                    {item.name}
                   </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
           )}
 
-          {/* PIN BUTTON */}
           <TouchableOpacity
             style={styles.pinButton}
             onPress={() => setSidebarOpen(!sidebarOpen)}
           >
             <Ionicons
               name={sidebarOpen ? "chevron-back" : "chevron-forward"}
-              size={20}
+              size={18}
               color="#fff"
             />
           </TouchableOpacity>
         </View>
 
-        {/* ===== RIGHT PRODUCTS ===== */}
+        {/* RIGHT PRODUCTS */}
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.verticalGrid}
@@ -170,11 +185,11 @@ export default function Categories() {
                   onPress={() => router.push(`/product/${item.id}`)}
                 >
                   <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.images?.[0] || item.thumbnail }}
                     style={styles.productImage}
                   />
                   <Text style={styles.productName}>{item.title}</Text>
-                  <Text style={styles.productPrice}>{item.price}</Text>
+                  <Text style={styles.productPrice}>${item.price}</Text>
                 </TouchableOpacity>
               ))
             ) : (

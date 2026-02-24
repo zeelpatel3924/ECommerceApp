@@ -1,48 +1,24 @@
-import { router } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
-import styles from "../styles/homeStyles";
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { useRouter } from "expo-router";
+import styles from "@/styles/homeStyles";
 
-export default function ProductGridHeader({ title }) {
+export default function SectionHeader({ title, category, type }) {
+  const router = useRouter();
+  const handleViewAll = () => {
+    router.push({
+      pathname: "/products/view-all",
+      params: {
+        category: category || null,
+        type: type || null,
+      },
+    });
+  };
+
   return (
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>{title}</Text>
-
-      <TouchableOpacity onPress={() => router.push("/products/view-all1")}>
-        <Text style={styles.viewAll}>View All</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-export function Best_SellingHeader({ title }) {
-  return (
-    <View style={styles.sectionHeader}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-
-      <TouchableOpacity onPress={() => router.push("/products/view-all2")}>
-        <Text style={styles.viewAll}>View All</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-export function Grocery_ProductHeader({ title }) {
-  return (
-    <View style={styles.sectionHeader}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-
-      <TouchableOpacity onPress={() => router.push("/products/view-all3")}>
-        <Text style={styles.viewAll}>View All</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-export function TopProductHeader({ title }) {
-  return (
-    <View style={styles.sectionHeader}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-
-      <TouchableOpacity onPress={() => router.push("/products/view-all4")}>
+      <TouchableOpacity onPress={handleViewAll}>
         <Text style={styles.viewAll}>View All</Text>
       </TouchableOpacity>
     </View>

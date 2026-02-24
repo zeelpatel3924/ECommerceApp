@@ -1,125 +1,163 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import {
+  Alert,
+  FlatList,
   Image,
-  ScrollView,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Pressable,
 } from "react-native";
-import { useWishlist } from "../context/WishlistContext";
-import { useRouter } from "expo-router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeFromWishlist as reduxRemoveFromWishlist,
+  selectWishlist,
+} from "../src/store/wishlistSlice";
+import { addToCart } from "../src/store/cartSlice";
 
 export default function Wishlist() {
-  const ctx = useWishlist() ?? { wishlist: [], removeFromWishlist: () => {} };
-  const { wishlist: rawWishlist, removeFromWishlist } = ctx;
-  const wishlist = Array.isArray(rawWishlist) ? rawWishlist : [];
+  const dispatch = useDispatch();
+  const wishlist = useSelector(selectWishlist) ?? [];
   const router = useRouter();
 
+  /* ================= REMOVE CONFIRM ================= */
+  const handleRemove = (id) => {
+    Alert.alert("Remove Item", "Remove this item from wishlist?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Remove",
+        style: "destructive",
+        onPress: () => dispatch(reduxRemoveFromWishlist(id)),
+      },
+    ]);
+  };
+
+  /* ================= MOVE TO CART ================= */
+  const handleMoveToCart = (item) => {
+    dispatch(addToCart(item));
+    dispatch(reduxRemoveFromWishlist(item.id));
+  };
+
+  /* ================= RENDER ITEM ================= */
+  const renderItem = ({ item }) => (
+    <Pressable
+      style={styles.itemCard}
+      onPress={() => router.push(`/product/${item.id}`)}
+    >
+      <Image
+        source={{ uri: item.images?.[0] || item.thumbnail || item.image }}
+        style={styles.image}
+      />
+
+      <View style={styles.info}>
+        <Text style={styles.title} numberOfLines={2}>
+          {item.title}
+        </Text>
+
+        <Text style={styles.price}>${item.price}</Text>
+
+        <View style={styles.actionRow}>
+          <TouchableOpacity
+            style={styles.cartBtn}
+            onPress={(e) => {
+              e.stopPropagation();
+              handleMoveToCart(item);
+            }}
+          >
+            <Ionicons name="cart-outline" size={16} color="#fff" />
+            <Text style={styles.cartBtnText}>Move to Cart</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        style={styles.removeBtn}
+        onPress={(e) => {
+          e.stopPropagation();
+          handleRemove(item.id);
+        }}
+      >
+        <Ionicons name="trash-outline" size={20} color="#e63946" />
+      </TouchableOpacity>
+    </Pressable>
+  );
+
   return (
-    <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+    <View style={styles.screen}>
       {/* ================= HEADER ================= */}
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => router.push("/account")}
-          style={styles.backButton}
-        >
+        <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
 
         <Text style={styles.headerTitle}>My Wishlist</Text>
 
-        <View style={{ width: 30 }} />
+        <View style={{ width: 22 }} />
       </View>
 
       {/* ================= BODY ================= */}
-      {wishlist.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Your wishlist is empty!</Text>
-        </View>
-      ) : (
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        >
-          {wishlist.map((item) => (
-            <Pressable
-              key={item.id}
-              style={styles.itemCard}
-              onPress={() => router.push(`/product/${item.id}`)}
+      <FlatList
+        data={wishlist}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ padding: 16, flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Ionicons name="heart-outline" size={70} color="#ccc" />
+            <Text style={styles.emptyText}>Your wishlist is empty</Text>
+            <TouchableOpacity
+              style={styles.shopBtn}
+              onPress={() => router.push("/home")}
             >
-              <Image source={{ uri: item.image }} style={styles.image} />
-
-              <View style={styles.info}>
-                <Text style={styles.title} numberOfLines={2}>
-                  {item.title}
-                </Text>
-                <Text style={styles.price}>{item.price}</Text>
-              </View>
-
-              <TouchableOpacity
-                style={styles.removeBtn}
-                onPress={() => removeFromWishlist(item.id)}
-              >
-                <Ionicons name="trash-outline" size={22} color="#e63946" />
-              </TouchableOpacity>
-            </Pressable>
-          ))}
-        </ScrollView>
-      )}
+              <Text style={styles.shopBtnText}>Start Shopping</Text>
+            </TouchableOpacity>
+          </View>
+        }
+        renderItem={renderItem}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+
   header: {
     paddingTop: 60,
     backgroundColor: "#1B3C53",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 14,
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingBottom: 14,
     elevation: 4,
   },
 
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   headerTitle: {
-    flex: 1,
-    textAlign: "center",
     color: "#fff",
     fontSize: 18,
     fontWeight: "700",
   },
 
-  container: {
-    padding: 16,
-  },
-
   itemCard: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 14,
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    borderRadius: 14,
+    padding: 14,
     elevation: 3,
   },
 
   image: {
-    width: 70,
-    height: 70,
-    borderRadius: 10,
+    width: 75,
+    height: 75,
+    borderRadius: 12,
   },
 
   info: {
@@ -128,7 +166,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "600",
     color: "#1B3C53",
   },
@@ -137,7 +175,26 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15,
     color: "#2a9d8f",
-    marginTop: 4,
+    marginTop: 6,
+  },
+
+  actionRow: {
+    marginTop: 8,
+  },
+
+  cartBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#1B3C53",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+  },
+
+  cartBtnText: {
+    color: "#fff",
+    fontSize: 12,
+    marginLeft: 4,
   },
 
   removeBtn: {
@@ -153,5 +210,19 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     color: "#888",
+    marginTop: 10,
+    marginBottom: 16,
+  },
+
+  shopBtn: {
+    backgroundColor: "#1B3C53",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+
+  shopBtnText: {
+    color: "#fff",
+    fontWeight: "600",
   },
 });

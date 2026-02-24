@@ -1,20 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { useCart } from "../../context/CartContext";
+import { useSelector } from "react-redux";
+import { selectCartCount } from "../../src/store/cartSlice";
 
-const PRIMARY = "#1B3C53";
-const INACTIVE = "#6b7f90";
+const PRIMARY = "#f6f2f2ff";
+const INACTIVE = "#4f5c66ff";
 const { width } = Dimensions.get("window");
 
 export default function TabLayout() {
-  const { cart } = useCart();
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalItems = useSelector(selectCartCount);
 
   const renderIcon = (name, focused, badge = false) => (
     <View style={focused ? styles.glowWrapper : styles.inactiveWrapper}>
       <View style={focused ? styles.activeTab : styles.inactiveTab}>
-        <Ionicons name={name} size={26} color={focused ? "#fff" : INACTIVE} />
+        <Ionicons name={name} size={26} color={focused ? "#0b31f1ff" : INACTIVE} />
 
         {badge && totalItems > 0 && (
           <View style={styles.badge}>

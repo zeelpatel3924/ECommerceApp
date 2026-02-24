@@ -1,13 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable import/no-named-as-default */
 
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React from "react";
 
-import { useCart } from "../../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, selectCartCount } from "../../src/store/cartSlice";
 
 import {
   Animated,
@@ -17,40 +15,82 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useWishlist } from "../../context/WishlistContext";
+import {
+  addToWishlist as reduxAddToWishlist,
+  removeFromWishlist as reduxRemoveFromWishlist,
+  selectWishlist,
+} from "../../src/store/wishlistSlice";
 import styles from "../../styles/idStyles";
-import BEST_SELLING from "../data/BestSelling";
-import CTALL_PRODUCTS from "../data/CTallproducts";
-import GROCERY_PROUDUCTS from "../data/Groceryproducts";
-import PRODUCTS from "../data/products";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 
+import {
+  getProductById,
+  getProductsByCategory,
+} from "../../src/api/productsApi";
+
 export default function ProductDetails() {
-  const { cart } = useCart();
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const dispatch = useDispatch();
+  const totalItems = useSelector(selectCartCount);
 
   const { id } = useLocalSearchParams();
-  const { addToCart } = useCart();
+  const addToCartLocal = (p) => dispatch(addToCart(p));
   const router = useRouter();
-  const ALL_PRODUCTS = [
-    ...PRODUCTS,
-    ...CTALL_PRODUCTS,
-    ...BEST_SELLING,
-    ...GROCERY_PROUDUCTS,
-  ];
 
-  const [qty, setQty] = React.useState(1);
+  const [product, setProduct] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchProduct();
+  }, [id]);
+
+  const fetchProduct = async () => {
+    try {
+      const data = await getProductById(id);
+      setProduct(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const qty = 1;
   const [added, setAdded] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
   const screenWidth = Dimensions.get("window").width;
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
-  const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } =
-    useWishlist();
+  const wishlist = useSelector(selectWishlist);
+  const isInWishlist = (id) => wishlist.some((it) => it.id === id);
+  const addToWishlist = (p) => dispatch(reduxAddToWishlist(p));
+  const removeFromWishlist = (id) => dispatch(reduxRemoveFromWishlist(id));
+  const [relatedProducts, setRelatedProducts] = React.useState([]);
+  React.useEffect(() => {
+    if (product?.category) {
+      fetchRelatedProducts();
+    }
+  }, [product]);
+  const fetchRelatedProducts = async () => {
+    try {
+      const data = await getProductsByCategory(product.category);
 
-  const product = React.useMemo(() =>
-    ALL_PRODUCTS.find((p) => p.id === id, [id]),
-  );
+      const filtered = data
+        .filter((item) => item.id !== product.id)
+        .slice(0, 8);
+
+      setRelatedProducts(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   if (!product) {
     return (
@@ -76,16 +116,11 @@ export default function ProductDetails() {
       }),
     ]).start();
 
-    addToCart({ ...product, qty });
+    addToCartLocal({ ...product, qty });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const relatedProducts = React.useMemo(() => {
-    return ALL_PRODUCTS.filter(
-      (item) => item.category === product.category && item.id !== product.id,
-    ).slice(0, 8); // limit items
-  }, [product]);
 
   return (
     <>
@@ -106,7 +141,7 @@ export default function ProductDetails() {
             <Ionicons name="cart-outline" size={22} color="#faf8f8ff" />
 
             {/* Cart Badge */}
-            {cart.length > 0 && (
+            {totalItems > 0 && (
               <View
                 style={{
                   position: "absolute",
@@ -122,13 +157,9 @@ export default function ProductDetails() {
                 }}
               >
                 <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: 11,
-                    fontWeight: "700",
-                  }}
+                  style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}
                 >
-                  {cart.reduce((sum, item) => sum + item.qty, 0)}
+                  {totalItems}
                 </Text>
               </View>
             )}
@@ -210,7 +241,7 @@ export default function ProductDetails() {
           <View style={styles.ratingRow}>
             <Feather name="star" size={18} color="#f5a623" />
             <Text style={styles.ratingText}>
-              {product.review} ({product.rating})
+              {product.rating || product.review || "4.5"}
             </Text>
           </View>
         </View>
@@ -221,37 +252,19 @@ export default function ProductDetails() {
         {/* Stock */}
         <Text
           style={{
-            color: product.stock < 5 ? "#e63946" : "#2a9d8f",
+            color: product.stock && product.stock < 5 ? "#e63946" : "#2a9d8f",
             marginLeft: 14,
             fontWeight: "600",
           }}
         >
-          {product.stock < 5 ? "Low stock" : "In stock"}
+          {product.stock
+            ? product.stock < 5
+              ? "Low stock"
+              : "In stock"
+            : "Available"}
         </Text>
 
-        <View style={styles.priceQtyRow}>
-          {/* Price */}
-          <Text style={styles.price}> {product.price}</Text>
-
-          {/* Quantity */}
-          <View style={styles.qtyRow}>
-            <TouchableOpacity
-              style={styles.qtyBtn}
-              onPress={() => qty > 1 && setQty(qty - 1)}
-            >
-              <Ionicons name="remove" size={18} color="#1B3C53" />
-            </TouchableOpacity>
-
-            <Text style={styles.qty}>{qty}</Text>
-
-            <TouchableOpacity
-              style={styles.qtyBtn}
-              onPress={() => setQty(qty + 1)}
-            >
-              <Ionicons name="add" size={18} color="#1B3C53" />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <Text style={styles.price}>${product.price}</Text>
 
         {added && <Text style={styles.addedText}> Added to cart</Text>}
 
@@ -269,17 +282,20 @@ export default function ProductDetails() {
                 <TouchableOpacity
                   key={item.id}
                   style={styles.relatedCard}
-                  onPress={() => router.push(`/product/${item.id}`)}
+                  onPress={() => router.replace(`/product/${item.id}`)}
                 >
                   <Image
-                    source={{ uri: item.image }}
+                    source={{
+                      uri: item.image || item.images?.[0],
+                    }}
                     style={styles.relatedImage}
                     contentFit="cover"
                   />
+
                   <Text numberOfLines={1} style={styles.relatedName}>
                     {item.title}
                   </Text>
-                  <Text style={styles.relatedPrice}>{item.price}</Text>
+                  <Text style={styles.relatedPrice}>${item.price}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
