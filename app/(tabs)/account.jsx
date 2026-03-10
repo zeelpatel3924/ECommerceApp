@@ -1,13 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import {
-  Alert,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutAction } from "../../src/store/authSlice";
 import styles from "../../styles/accountStyles";
@@ -47,18 +41,10 @@ export default function Account() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* ================= PROFILE ================= */}
       <View style={styles.profileCard}>
-        <View
-          style={[
-            styles.avatar,
-            user?.name && styles.avatarPlaceholder,
-          ]}
-        >
+        <View style={[styles.avatar, user?.name && styles.avatarPlaceholder]}>
           {user?.name ? (
             <Text style={styles.avatarInitials}>{initials}</Text>
           ) : (
@@ -67,12 +53,8 @@ export default function Account() {
         </View>
 
         <View style={{ marginLeft: 14 }}>
-          <Text style={styles.name}>
-            {user?.name ?? "Guest User"}
-          </Text>
-          <Text style={styles.email}>
-            {user?.email ?? "Not signed in"}
-          </Text>
+          <Text style={styles.name}>{user?.name ?? "Guest User"}</Text>
+          <Text style={styles.email}>{user?.email ?? "Not signed in"}</Text>
         </View>
       </View>
 
@@ -86,7 +68,12 @@ export default function Account() {
         <MenuCard
           icon="heart-outline"
           title="Wishlist"
-          onPress={() => router.push("/wishlist")}
+          onPress={() =>
+            router.push({
+              pathname: "/wishlist",
+              params: { from: "account" },
+            })
+          }
         />
         <MenuCard
           icon="location-outline"
@@ -122,17 +109,8 @@ function MenuCard({ icon, title, danger, onPress }) {
       style={[styles.menuCard, danger && styles.dangerCard]}
       onPress={onPress}
     >
-      <Ionicons
-        name={icon}
-        size={26}
-        color={danger ? "#E63946" : "#234C6A"}
-      />
-      <Text
-        style={[
-          styles.menuText,
-          danger && styles.dangerText,
-        ]}
-      >
+      <Ionicons name={icon} size={26} color={danger ? "#E63946" : "#234C6A"} />
+      <Text style={[styles.menuText, danger && styles.dangerText]}>
         {title}
       </Text>
     </TouchableOpacity>

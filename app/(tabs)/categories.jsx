@@ -11,12 +11,12 @@ import {
   View,
 } from "react-native";
 import CartBadge from "../../components/CartBadge";
-import styles from "../../styles/categoriesStyles";
 import {
   getAllProducts,
   getCategories,
   getProductsByCategory,
 } from "../../src/api/productsApi";
+import styles from "../../styles/categoriesStyles";
 
 export default function Categories() {
   const { category } = useLocalSearchParams();

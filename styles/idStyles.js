@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from "react-native";
 
 const { width } = Dimensions.get("window");
 
-const PRIMARY = "#234C6A";
+const PRIMARY = "#052659";
 const BG = "#f7f9fc";
 
 export default StyleSheet.create({
@@ -194,14 +194,6 @@ export default StyleSheet.create({
     color: "#234C6A",
   },
 
-  // priceQtyRow: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   justifyContent: "space-between",
-  //   marginTop: 10,
-  //   paddingHorizontal :16,
-  // },
-
   price: {
     flexDirection: "row",
     fontSize: 25,
@@ -209,28 +201,6 @@ export default StyleSheet.create({
     color: "#0F172A",
     paddingHorizontal: 16,
   },
-
-  //   qtyRow: {
-  //     flexDirection: "row",
-  //     alignItems: "center",
-  //     backgroundColor:"#a8b3cdff",
-  //     borderRadius: 8,
-  //     paddingHorizontal: 6,
-  //     paddingVertical: 4,
-  // fontWeight:"bold"
-  //   },
-
-  //   qtyBtn: {
-  //     padding: 4,
-
-  //   },
-
-  //   qty: {
-  //     marginHorizontal: 10,
-  //     fontSize: 14,
-  //     color: "#0F172A",
-  //     fontWeight:"900"
-  //   },
 
   addedText: {
     marginTop: 12,
@@ -242,37 +212,60 @@ export default StyleSheet.create({
 
   /* ================= STICKY BAR ================= */
   stickyBar: {
-    position: "absolute",
-    bottom: 12,
-    left: 0,
-    right: 0,
-    borderRadius: 16,
+    flexDirection: "row",
+    padding: 23,
+    backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderColor: "#eee",
+  },
+
+  /* LEFT BUTTON */
+  viewCartBtn: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    padding: 12,
-    backgroundColor: "#a8b3cdff",
-    borderTopWidth: 1,
-    borderTopColor: "#EEF2F7",
+    justifyContent: "center",
+    backgroundColor: "#1B3C53",
+    paddingVertical: 14,
+    borderRadius: 14, 
+    height  : 55,
+    marginRight: 8,
+    position: "relative",
   },
 
-  cartIconBtn: {
-    width: 80,
-    height: 50,
-    borderRadius: 14,
-    backgroundColor: "#F1F5F9",
+  viewCartText: {
+    color: "#fff",
+    fontWeight: "700",
+    marginLeft: 6,
+    fontSize: 15,
+  },
+
+  /* RIGHT BUTTON */
+  addToCartBtn: {
+    flex: 1,
+    backgroundColor: "#FFB703",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 20,
+    borderRadius: 14,
+    marginLeft: 8,
+    paddingVertical: 14,
   },
 
+  addToCartText: {
+    fontWeight: "700",
+    fontSize: 15,
+    color: "#052659",
+  },
+
+  /* Badge */
   badge: {
     position: "absolute",
     top: -6,
     right: -6,
-    backgroundColor: "#e63946",
+    backgroundColor: "#E63946",
+    borderRadius: 10,
     minWidth: 18,
     height: 18,
-    borderRadius: 9,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 4,
@@ -281,21 +274,6 @@ export default StyleSheet.create({
   badgeText: {
     color: "#fff",
     fontSize: 11,
-    fontWeight: "700",
-  },
-
-  ViewBtn: {
-    flex: 1,
-    height: 50,
-    borderRadius: 16,
-    backgroundColor: "#234C6A",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  ViewBtnText: {
-    color: "#FFFFFF",
-    fontSize: 16,
     fontWeight: "700",
   },
 

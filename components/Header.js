@@ -1,3 +1,4 @@
+import React, { useCallback, useMemo } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -5,9 +6,25 @@ import { useSelector } from "react-redux";
 import { selectCartCount } from "../src/store/cartSlice";
 import styles from "../styles/homeStyles";
 
-export default function Header() {
+function Header() {
   const router = useRouter();
   const totalItems = useSelector(selectCartCount);
+
+  // ✅ Memoized navigation
+  const handleCartPress = useCallback(() => {
+    router.push("/cart");
+  }, [router]);
+
+  // ✅ Memoized badge rendering
+  const cartBadge = useMemo(() => {
+    if (totalItems <= 0) return null;
+
+    return (
+      <View style={styles.cartBadge}>
+        <Text style={styles.cartBadgeText}>{totalItems}</Text>
+      </View>
+    );
+  }, [totalItems]);
 
   return (
     <View style={styles.header}>
@@ -19,15 +36,13 @@ export default function Header() {
         </View>
       </View>
 
-      <TouchableOpacity onPress={() => router.push("/cart")}>
+      <TouchableOpacity onPress={handleCartPress}>
         <Ionicons name="cart-outline" size={22} color="#000" />
-
-        {totalItems > 0 && (
-          <View style={styles.cartBadge}>
-            <Text style={styles.cartBadgeText}>{totalItems}</Text>
-          </View>
-        )}
+        {cartBadge}
       </TouchableOpacity>
     </View>
   );
 }
+
+// ✅ Prevent unnecessary re-renders from parent
+export default React.memo(Header);

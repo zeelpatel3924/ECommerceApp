@@ -31,6 +31,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const initAuth = createAsyncThunk("auth/init", async () => {
+
   try {
     const session = await secureGet("session");
     try {

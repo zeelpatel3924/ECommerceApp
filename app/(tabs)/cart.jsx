@@ -23,13 +23,13 @@ export default function Cart() {
   const cart = useSelector(selectCartItems);
   const router = useRouter();
 
-  // totoal calculation
+  /* ================= TOTAL CALCULATION ================= */
   const totalAmount = cart.reduce((sum, item) => {
     const price = Number(item.price) || 0;
     return sum + price * item.qty;
   }, 0);
 
-  // remove confirm
+  /* ================= REMOVE CONFIRM ================= */
   const handleRemove = (id) => {
     Alert.alert("Remove Item", "Are you sure you want to remove this item?", [
       { text: "Cancel", style: "cancel" },
@@ -41,7 +41,7 @@ export default function Cart() {
     ]);
   };
 
-  // Checkout handler
+  /* ================= CHECKOUT ================= */
   const handleCheckout = () => {
     Alert.alert(
       "Order Successful 🎉",
@@ -58,31 +58,32 @@ export default function Cart() {
     );
   };
 
-  // render Item
+  /* ================= RENDER ITEM ================= */
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.cartItem}
-      activeOpacity={0.85}
-      onPress={() => router.push(`/product/${item.id}`)}
-    >
-      <Image
-        source={{ uri: item.images?.[0] || item.thumbnail || item.image }}
-        style={styles.productImage}
-      />
+    <View style={styles.cartItem}>
+      {/* ✅ Image Click Only */}
+      <TouchableOpacity
+        activeOpacity={0.85}
+        onPress={() => router.push(`/product/${item.id}`)}
+      >
+        <Image
+          source={{ uri: item.images?.[0] || item.thumbnail || item.image }}
+          style={styles.productImage}
+        />
+      </TouchableOpacity>
 
+      {/* Product Info */}
       <View style={styles.productInfo}>
         <Text numberOfLines={1} style={styles.productTitle}>
           {item.title}
         </Text>
+
         <Text style={styles.productPrice}>${item.price}</Text>
 
-        {/* Quantity Row */}
+        {/* Quantity Controls */}
         <View style={styles.qtyRow}>
           <TouchableOpacity
-            onPress={(e) => {
-              e.stopPropagation();
-              dispatch(decreaseQty(item.id));
-            }}
+            onPress={() => dispatch(decreaseQty(item.id))}
             style={styles.qtyBtn}
           >
             <Ionicons name="remove" size={16} />
@@ -91,10 +92,7 @@ export default function Cart() {
           <Text style={styles.qtyText}>{item.qty}</Text>
 
           <TouchableOpacity
-            onPress={(e) => {
-              e.stopPropagation();
-              dispatch(increaseQty(item.id));
-            }}
+            onPress={() => dispatch(increaseQty(item.id))}
             style={styles.qtyBtn}
           >
             <Ionicons name="add" size={16} />
@@ -102,22 +100,19 @@ export default function Cart() {
         </View>
       </View>
 
-      {/*Delete Button*/}
+      {/* Delete Button */}
       <TouchableOpacity
-        onPress={(e) => {
-          e.stopPropagation();
-          handleRemove(item.id);
-        }}
+        onPress={() => handleRemove(item.id)}
         style={styles.deleteBtn}
       >
         <Ionicons name="trash-outline" size={20} color="red" />
       </TouchableOpacity>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* ================= HEADER ================= */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={26} color="#fff" />
@@ -125,35 +120,41 @@ export default function Cart() {
 
         <Text style={styles.headerTitle}>My Cart</Text>
 
-        <TouchableOpacity onPress={() => router.push("/wishlist")}>
+        <TouchableOpacity
+          onPress={() =>
+            router.push({
+              pathname: "/wishlist",
+              params: { from: "cart" },
+            })
+          }
+        >
           <Feather name="heart" size={26} color="red" />
         </TouchableOpacity>
       </View>
 
-      {/* Cart Items */}
+      {/* ================= CART ITEMS ================= */}
       <FlatList
         data={cart}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        renderItem={renderItem}
         ListEmptyComponent={
           <View style={{ alignItems: "center", marginTop: 60 }}>
             <Ionicons name="cart-outline" size={70} color="#ccc" />
             <Text style={styles.emptyText}>Your cart is empty 🛒</Text>
           </View>
         }
-        renderItem={renderItem}
       />
 
-      {/*Bottom Summary*/}
+      {/* ================= BOTTOM SUMMARY ================= */}
       {cart.length > 0 && (
         <View style={styles.summary}>
           <View style={styles.totalRow}>
             <Text style={styles.totalText}>Total</Text>
-            <Text style={styles.totalAmount}>${totalAmount}</Text>
+            <Text style={styles.totalAmount}>${totalAmount.toFixed(2)}</Text>
           </View>
 
-          {/*Checkout Button*/}
           <TouchableOpacity
             style={styles.checkoutBtn}
             onPress={handleCheckout}

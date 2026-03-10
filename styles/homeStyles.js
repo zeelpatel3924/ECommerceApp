@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   /* ================= SCREEN ================= */
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -6,
     right: -6,
-    backgroundColor: "#EF4444",
+    backgroundColor: "#f70d0dff",
     borderRadius: 12,
     minWidth: 20,
     height: 20,
@@ -207,30 +207,30 @@ const styles = StyleSheet.create({
   },
 
   bottomRow: {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginTop: 8,
-},
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 8,
+  },
 
-viewBtn: {
-  backgroundColor: "#2563EB",
-  paddingHorizontal: 12,
-  paddingVertical: 6,
-  borderRadius: 20,
-},
+  viewBtn: {
+    backgroundColor: "#2563EB",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
 
-viewText: {
-  color: "#fff",
-  fontSize: 11,
-  fontWeight: "700",
-},
+  viewText: {
+    color: "#fff",
+    fontSize: 11,
+    fontWeight: "700",
+  },
 
-price: {
-  color: "#1B3C53",
-  fontSize: 16,
-  fontWeight: "700",
-},
+  price: {
+    color: "#1B3C53",
+    fontSize: 16,
+    fontWeight: "700",
+  },
 
   /* ================= HORIZONTAL GROCERY CARD ================= */
   Grocerycard: {

@@ -1,21 +1,27 @@
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import React, { useCallback } from "react";
+import { TouchableOpacity, View } from "react-native";
+import styles from "../styles/viewAllStyles";
 import CartBadge from "./CartBadge";
 
-import styles from "../styles/viewAllStyles";
+function ViewAllHeader() {
+  const router = useRouter();
 
-const ViewAllHeader = () => {
+  const handleBack = useCallback(() => {
+    router.back();
+  }, [router]);
+
   return (
     <View style={styles.header}>
       {/* Back Button */}
-      <TouchableOpacity onPress={() => router.back()}>
+      <TouchableOpacity onPress={handleBack}>
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
+
       <CartBadge />
     </View>
   );
-};
+}
 
-export default ViewAllHeader;
+export default React.memo(ViewAllHeader);

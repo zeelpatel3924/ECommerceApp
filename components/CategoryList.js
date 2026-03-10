@@ -1,26 +1,41 @@
+import React, { useMemo, useCallback } from "react";
 import { useRouter } from "expo-router";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
 import styles from "../styles/homeStyles";
 
-export default function CategoryList({ categories }) {
+function CategoryList({ categories = [] }) {
   const router = useRouter();
+
+
+  const handleNavigate = useCallback(
+    (slug) => {
+      router.push({
+        pathname: "/(tabs)/categories",
+        params: { category: slug },
+      });
+    },
+    [router]
+  );
+
+  
+  const renderedCategories = useMemo(() => {
+    return categories.map((item) => (
+      <TouchableOpacity
+        key={item.slug}
+        style={styles.catBox}
+        onPress={() => handleNavigate(item.slug)}
+      >
+        <Text style={styles.catText}>{item.name}</Text>
+      </TouchableOpacity>
+    ));
+  }, [categories, handleNavigate]);
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {categories.map((item) => (
-        <TouchableOpacity
-          key={item.slug} 
-          style={styles.catBox}
-          onPress={() =>
-            router.push({
-              pathname: "/(tabs)/categories",
-              params: { category: item.slug }, 
-            })
-          }
-        >
-          <Text style={styles.catText}>{item.name}</Text>
-        </TouchableOpacity>
-      ))}
+      {renderedCategories}
     </ScrollView>
   );
 }
+
+
+export default React.memo(CategoryList);

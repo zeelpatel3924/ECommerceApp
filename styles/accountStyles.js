@@ -1,54 +1,65 @@
 import { StyleSheet } from "react-native";
 
+const PRIMARY = "#052659";
+const SECONDARY = "#0A3D62";
+const ACCENT = "#FFB703";
+const BG = "#F4F7FB";
+
 export default StyleSheet.create({
   /* ================= CONTAINER ================= */
   container: {
     flex: 1,
-    backgroundColor: "#F7F9FC",
-    paddingHorizontal: 16,
-    paddingTop: 60, 
+    backgroundColor: BG,
+    paddingHorizontal: 18,
+    paddingTop: 60,
   },
 
   /* ================= PROFILE CARD ================= */
   profileCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#1B3C53",
-    borderRadius: 18,
-    padding: 16,
-    marginTop: 16,
-    marginBottom: 24,
+    backgroundColor: PRIMARY,
+    borderRadius: 24,
+    padding: 18,
+    marginTop: 10,
+    marginBottom: 28,
+
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
   },
 
   avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#456882",
+    backgroundColor: SECONDARY,
   },
 
   avatarPlaceholder: {
-    backgroundColor: "#456882",
+    backgroundColor: SECONDARY,
   },
 
   avatarInitials: {
     color: "#fff",
-    fontSize: 20,
-    fontWeight: "700",
+    fontSize: 22,
+    fontWeight: "800",
   },
 
   name: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "700",
     color: "#fff",
   },
 
   email: {
-    fontSize: 13,
-    color: "#dbe4ec",
-    marginTop: 2,
+    fontSize: 14,
+    color: "#E2E8F0",
+    marginTop: 4,
   },
 
   /* ================= MENU GRID ================= */
@@ -61,35 +72,42 @@ export default StyleSheet.create({
   menuCard: {
     width: "48%",
     backgroundColor: "#fff",
-    borderRadius: 16,
-    paddingVertical: 20,
-    marginBottom: 16,
+    borderRadius: 20,
+    paddingVertical: 22,
+    marginBottom: 18,
     alignItems: "center",
     justifyContent: "center",
 
-    /* Shadow (Android + iOS) */
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 5,
   },
 
   menuText: {
-    marginTop: 8,
-    fontSize: 14,
+    marginTop: 10,
+    fontSize: 15,
     fontWeight: "600",
-    color: "#234C6A",
+    color: PRIMARY,
   },
 
   /* ================= DANGER / LOGOUT ================= */
   dangerCard: {
+    backgroundColor: "#FFF1F2",
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#F3B6BC",
-    backgroundColor: "#FFF5F6",
+    borderColor: "#FECACA",
+
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
 
   dangerText: {
-    color: "#E63946",
+    color: "#DC2626",
+    fontWeight: "700",
   },
 });

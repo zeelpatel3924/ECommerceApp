@@ -9,11 +9,12 @@ export default StyleSheet.create({
   },
 
  header: {
+  marginTop: 30,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingVertical: 20,
     borderBottomWidth: 1,
     borderColor: "#eee",
   },

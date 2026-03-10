@@ -132,7 +132,9 @@ const styles = StyleSheet.create({
   },
 
   verticalGrid: {
-    paddingBottom: 20,
+  
+     paddingBottom: 140,
+    flexGrow: 1,
   },
 
   gridContainer: {

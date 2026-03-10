@@ -1,21 +1,59 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
-import { View, ScrollView, Image, Dimensions } from "react-native";
+ 
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Dimensions, Image, ScrollView, View } from "react-native";
 
-export default function BannerSlider({ banners }) {
-  const { width } = Dimensions.get("window");
-  const scrollRef = React.useRef(null);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+export default function BannerSlider({ banners = [] }) {
+  const width = useMemo(() => Dimensions.get("window").width, []);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      let nextIndex = (currentIndex + 1) % banners.length;
-      scrollRef.current?.scrollTo({ x: nextIndex * width, animated: true });
+  const scrollRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const onMomentumScrollEnd = useCallback(
+    (e) => {
+      const offsetX = e.nativeEvent.contentOffset.x;
+      const nextIndex = Math.round(offsetX / width);
       setCurrentIndex(nextIndex);
+    },
+    [width],
+  );
+
+  useEffect(() => {
+    if (!banners.length) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % banners.length;
+
+        scrollRef.current?.scrollTo({
+          x: nextIndex * width,
+          animated: true,
+        });
+
+        return nextIndex;
+      });
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [banners.length, width]);
+
+  const renderedBanners = useMemo(
+    () =>
+      banners.map((img, index) => (
+        <Image
+          key={index}
+          source={{ uri: img }}
+          style={{ width, height: 180 }}
+          resizeMode="cover"
+        />
+      )),
+    [banners, width],
+  );
 
   return (
     <View style={{ height: 180, marginTop: 10 }}>
@@ -24,15 +62,9 @@ export default function BannerSlider({ banners }) {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={onMomentumScrollEnd}
       >
-        {banners.map((img, index) => (
-          <Image
-            key={index}
-            source={{ uri: img }}
-            style={{ width, height: 180 }}
-            resizeMode="cover"
-          />
-        ))}
+        {renderedBanners}
       </ScrollView>
     </View>
   );

@@ -33,19 +33,24 @@ export default function ProductDetails() {
   const dispatch = useDispatch();
   const totalItems = useSelector(selectCartCount);
 
-  const { id } = useLocalSearchParams();
+  const { id, product: productParam } = useLocalSearchParams();
+
   const addToCartLocal = (p) => dispatch(addToCart(p));
   const router = useRouter();
 
-  const [product, setProduct] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const [product, setProduct] = React.useState(
+    productParam ? JSON.parse(productParam) : null,
+  );
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
+    if (product) return; // ✅ skip fetch if passed
+
     fetchProduct();
   }, [id]);
-
   const fetchProduct = async () => {
     try {
+      setLoading(true); // ✅ move loading here
       const data = await getProductById(id);
       setProduct(data);
     } catch (error) {
@@ -54,6 +59,12 @@ export default function ProductDetails() {
       setLoading(false);
     }
   };
+
+  const images = product?.images?.length
+    ? product.images
+    : product?.image
+      ? [product.image]
+      : [];
 
   const qty = 1;
   const [added, setAdded] = React.useState(false);
@@ -95,9 +106,7 @@ export default function ProductDetails() {
   if (!product) {
     return (
       <View style={styles.center}>
-        <Text style={{ color: "#6b7f90", fontSize: 18 }}>
-          Product not found
-        </Text>
+        <Text>Product not found</Text>
       </View>
     );
   }
@@ -120,7 +129,6 @@ export default function ProductDetails() {
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
-
 
   return (
     <>
@@ -147,7 +155,7 @@ export default function ProductDetails() {
                   position: "absolute",
                   top: -6,
                   right: -6,
-                  backgroundColor: "#456882",
+                  backgroundColor: "#f70d0dff",
                   borderRadius: 10,
                   minWidth: 18,
                   height: 18,
@@ -185,7 +193,7 @@ export default function ProductDetails() {
               setActiveIndex(idx);
             }}
           >
-            {(product.images || [product.image]).map((src, i) => (
+            {images.map((src, i) => (
               <Animated.View
                 key={i}
                 style={{
@@ -222,7 +230,7 @@ export default function ProductDetails() {
 
           {/* Dots */}
           <View style={styles.dotsContainer} pointerEvents="none">
-            {(product.images || [product.image]).map((_, i) => (
+            {images.map((src, i) => (
               <View
                 key={i}
                 style={[styles.dot, activeIndex === i && styles.dotActive]}
@@ -233,7 +241,7 @@ export default function ProductDetails() {
 
         <View style={styles.titleRow}>
           {/* Title */}
-          <Text style={styles.title} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={2}>
             {product.title}
           </Text>
 
@@ -282,11 +290,16 @@ export default function ProductDetails() {
                 <TouchableOpacity
                   key={item.id}
                   style={styles.relatedCard}
-                  onPress={() => router.replace(`/product/${item.id}`)}
+                  onPress={() =>
+                    router.push({
+                      pathname: `/product/${item.id}`,
+                      params: { product: JSON.stringify(item) },
+                    })
+                  }
                 >
                   <Image
                     source={{
-                      uri: item.image || item.images?.[0],
+                      uri: item.images?.[0] || item.thumbnail || item.image,
                     }}
                     style={styles.relatedImage}
                     contentFit="cover"
@@ -304,16 +317,17 @@ export default function ProductDetails() {
       </ScrollView>
 
       {/* Sticky Bar */}
+      {/* Sticky Bar */}
       <View style={styles.stickyBar}>
-        {/* Left Cart Icon */}
+        {/* LEFT — View Cart */}
         <TouchableOpacity
-          style={styles.cartIconBtn}
-          onPress={handleAddToCart}
-          activeOpacity={0.8}
+          style={styles.viewCartBtn}
+          onPress={() => router.push("/cart")}
+          activeOpacity={0.9}
         >
-          <Ionicons name="cart-outline" size={27} color="#0F172A" />
+          <Ionicons name="cart-outline" size={20} color="#fff" />
+          <Text style={styles.viewCartText}>View Cart</Text>
 
-          {/* Cart Badge */}
           {totalItems > 0 && (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>{totalItems}</Text>
@@ -321,13 +335,13 @@ export default function ProductDetails() {
           )}
         </TouchableOpacity>
 
-        {/* View Cart Button */}
+        {/* RIGHT — Add To Cart */}
         <TouchableOpacity
-          style={styles.ViewBtn}
-          onPress={() => router.push("/cart")}
+          style={styles.addToCartBtn}
+          onPress={handleAddToCart}
           activeOpacity={0.9}
         >
-          <Text style={styles.ViewBtnText}>View cart</Text>
+          <Text style={styles.addToCartText}>Add To Cart</Text>
         </TouchableOpacity>
       </View>
     </>

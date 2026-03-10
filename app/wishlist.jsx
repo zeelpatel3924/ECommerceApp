@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   Alert,
   FlatList,
@@ -11,16 +11,17 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../src/store/cartSlice";
 import {
   removeFromWishlist as reduxRemoveFromWishlist,
   selectWishlist,
 } from "../src/store/wishlistSlice";
-import { addToCart } from "../src/store/cartSlice";
 
 export default function Wishlist() {
   const dispatch = useDispatch();
   const wishlist = useSelector(selectWishlist) ?? [];
   const router = useRouter();
+  const { from } = useLocalSearchParams();
 
   /* ================= REMOVE CONFIRM ================= */
   const handleRemove = (id) => {
@@ -88,7 +89,17 @@ export default function Wishlist() {
     <View style={styles.screen}>
       {/* ================= HEADER ================= */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity
+          onPress={() => {
+            if (from === "cart") {
+              router.replace("/cart");
+            } else if (from === "account") {
+              router.replace("/account");
+            } else {
+              router.back();
+            }
+          }}
+        >
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
 
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
 
   header: {
     paddingTop: 60,
-    backgroundColor: "#1B3C53",
+    backgroundColor: "#052659",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
   cartBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#1B3C53",
+    backgroundColor: "#211fc6ff",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 8,

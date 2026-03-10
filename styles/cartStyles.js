@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const PRIMARY = "#234C6A";
+const PRIMARY = "#052659";
 
 export default StyleSheet.create({
   container: {
@@ -16,7 +16,7 @@ export default StyleSheet.create({
   paddingTop: 55,
   paddingHorizontal: 16,
   paddingBottom: 15,
-  backgroundColor: "#1B3C53",
+  backgroundColor: "#052659",
 },
 
 headerTitle: {
